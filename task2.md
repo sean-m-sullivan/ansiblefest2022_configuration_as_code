@@ -9,4 +9,3 @@ Ensure that you have `ansible-navigator` installed on your machine.
 ```console
 dnf install ansible-navigator
 ```
-
