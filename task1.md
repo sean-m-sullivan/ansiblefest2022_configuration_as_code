@@ -17,10 +17,10 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 2
 
-Install our ee_utilities collection using `ansible-galaxy` command.
+Install our ee_utilities collection and containers.podman using `ansible-galaxy` command.
 
 ```console
-ansible-galaxy collection install redhat_cop.ee_utilities
+ansible-galaxy collection install redhat_cop.ee_utilities containers.podman
 ```
 
 Further documentation for those who are interested to learn more see:
@@ -30,7 +30,7 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 3
 
-Create a file in this folder path group_vars/all/auth.yml
+Create a file in this folder path `group_vars/all/auth.yml`
 
 ```yaml
 # User may update controller/hub auth creds to this file and encrypt it using `ansible-vault`
@@ -46,6 +46,11 @@ ah_password: "{{ ah_pass | default('Password1234!') }}"
 ah_path_prefix: 'galaxy' # this is for private automation hub
 ah_verify_ssl: false
 ah_validate_certs: false
+
+ee_registry_username: "{{ ah_username }}"
+ee_registry_password: "{{ ah_password }}"
+ee_registry_dest: "{{ ah_host }}"
+ee_validate_certs: false
 ...
 ```
 
@@ -56,7 +61,7 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 4
 
-Create your inventory file inventory.yml, copy in the username and password into the correct fields a long with the servers. For the builder group put the automation hub server.
+Create your inventory file `inventory.yml`, copy in the username and password into the correct fields a long with the servers. For the builder group put the automation hub server.
 
 ```yaml
 ---
@@ -76,7 +81,9 @@ all:
   vars:
     ansible_user: HERE
     ansible_password: HERE
-    admin_password: HERE
+    controller_pass: HERE
+    ah_pass: HERE
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no' # might need this, test without on lab
 ...
 ```
 
@@ -87,7 +94,7 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 5
 
-Create a new playbook called buildEE.yml and make the hosts use the group builder (which for this lab we are using automation hub, see note) and turn gather_facts on.
+Create a new playbook called `buildEE.yml` and make the hosts use the group builder (which for this lab we are using automation hub, see note) and turn gather_facts on. Then add include role redhat_cop.ee_utilities.ee_builder
 
 Note: this we would normally suggest being a small cli only server for deploying config as code and running installer/upgrades for AAP
 
@@ -97,22 +104,10 @@ Note: this we would normally suggest being a small cli only server for deploying
   hosts: builder
   gather_facts: true
   tasks:
-```
-
-Further documentation for those who are interested to learn more see:
-
-- link1
-- link2
-
-## Step 6
-
-Include the role redhat_cop.ee_utilities.ee_builder and have a vars section for that include role
-
-```yaml
     - name: include ee_builder role
       ansible.builtin.include_role:
         name: redhat_cop.ee_utilities.ee_builder
-      vars:
+...
 ```
 
 Further documentation for those who are interested to learn more see:
@@ -120,14 +115,14 @@ Further documentation for those who are interested to learn more see:
 - [include vs import](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_role_module.html)
 - [ee_builder role](https://github.com/redhat-cop/ee_utilities/tree/main/roles/ee_builder)
 
-## Step 7
+## Step 6
 
-In the vars we will pass it a list called `ee_list` that has 4 variables per item which are:
+Create a file `group_vars/all/ah_ee_list.yml` where we will create a list called `ee_list` that has 4 variables per item which are:
 
 - `ee_name` this is required and will be what the EE image will be called
-- `ee_bindep` this is any system packages that would be needed
-- `ee_python` these are any python modules that need to be added through pip (excluding ansible)
-- `ee_collections` any collections that you would like to be built into your EE image
+- `bindep` this is any system packages that would be needed
+- `python` these are any python modules that need to be added through pip (excluding ansible)
+- `collections` any collections that you would like to be built into your EE image
 
 which the role will loop over and for each item in this list it will create and publish an EE using the provided variables. For this lab we will just pass it 3 of the 4 redhat_cop configuration as code collections which are:
 
@@ -136,20 +131,25 @@ which the role will loop over and for each item in this list it will create and 
 - redhat_cop.ee_utilities
 
 ```yaml
+---
 ee_list:
   - ee_name: config_as_code
-    ee_collections:
+    collections:
       - name: redhat_cop.controller_configuration
       - name: redhat_cop.ah_configuration
       - name: redhat_cop.ee_utilities
+
+ee_image_push: true
+ee_create_ansible_config: false
+...
 ```
 
 Further documentation for those who are interested to learn more see:
 
 - [YAML lists and more](https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html)
-- link2
+- [builder role documentation](https://github.com/redhat-cop/ee_utilities/blob/main/roles/ee_builder/README.md#build-argument-defaults)
 
-## Step 8
+## Step 7
 
 Run the playbook pointing to the recently created inventory file and limit the run to just builder to build your new custom EE and publish it to private automation hub.
 
