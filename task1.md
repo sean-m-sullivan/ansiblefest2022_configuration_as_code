@@ -30,7 +30,7 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 3
 
-Create a file in this folder path group_vars/all/auth.yml
+Create a file in this folder path `group_vars/all/auth.yml`
 
 ```yaml
 # User may update controller/hub auth creds to this file and encrypt it using `ansible-vault`
@@ -61,7 +61,7 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 4
 
-Create your inventory file inventory.yml, copy in the username and password into the correct fields a long with the servers. For the builder group put the automation hub server.
+Create your inventory file `inventory.yml`, copy in the username and password into the correct fields a long with the servers. For the builder group put the automation hub server.
 
 ```yaml
 ---
@@ -94,7 +94,7 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 5
 
-Create a new playbook called buildEE.yml and make the hosts use the group builder (which for this lab we are using automation hub, see note) and turn gather_facts on. Then add include role redhat_cop.ee_utilities.ee_builder
+Create a new playbook called `buildEE.yml` and make the hosts use the group builder (which for this lab we are using automation hub, see note) and turn gather_facts on. Then add include role redhat_cop.ee_utilities.ee_builder
 
 Note: this we would normally suggest being a small cli only server for deploying config as code and running installer/upgrades for AAP
 
@@ -117,7 +117,7 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 6
 
-Create a file called ah_ee_list.yml in group_vars/all where we will create a list called `ee_list` that has 4 variables per item which are:
+Create a file `group_vars/all/ah_ee_list.yml` where we will create a list called `ee_list` that has 4 variables per item which are:
 
 - `ee_name` this is required and will be what the EE image will be called
 - `bindep` this is any system packages that would be needed
