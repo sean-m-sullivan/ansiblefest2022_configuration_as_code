@@ -4,10 +4,10 @@ In this section we will show you step by step how to build an Execution Environm
 
 ## Step 1
 
-Ensure that you have `ansible-core` installed on your machine.
+Ensure that you have `ansible-core` and `ansible-builder` installed on your machine.
 
 ```console
-dnf install ansible-core
+dnf install ansible-core ansible-builder
 ```
 
 Further documentation for those who are interested to learn more see:
@@ -26,14 +26,14 @@ ansible-galaxy collection install redhat_cop.ee_utilities
 Further documentation for those who are interested to learn more see:
 
 - [installing collections using cli](https://docs.ansible.com/ansible/devel/user_guide/collections_using.html#collections)
-- [using collections in AAP](https://docs.ansible.com/ansible/devel/user_guide/collections_using.html#collections)
+- [using collections in AAP](https://docs.ansible.com/ansible-tower/latest/html/userguide/projects.html#collections-support)
 
 ## Step 3
 
 Create a file in this folder path group_vars/all/auth.yml
 
 ```yaml
-# User may add controller auth creds to this file and encrypt it using `ansible-vault`
+# User may update controller/hub auth creds to this file and encrypt it using `ansible-vault`
 ---
 controller_hostname: "{{ groups['automationcontroller'][0] }}"
 controller_username: "{{ controller_user | default('admin') }}"
@@ -51,7 +51,7 @@ ah_validate_certs: false
 
 Further documentation for those who are interested to learn more see:
 
-- [more about group_vars](https://docs.ansible.com/ansible/devel/user_guide/collections_using.html#collections)
+- [more about group_vars](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#organizing-host-and-group-variables)
 - link2
 
 ## Step 4
@@ -82,8 +82,8 @@ all:
 
 Further documentation for those who are interested to learn more see:
 
-- [more about inventories](https://docs.ansible.com/ansible/devel/user_guide/collections_using.html#collections)
-- [how to use this source in AAP](https://docs.ansible.com/ansible/devel/user_guide/collections_using.html#collections)
+- [more about inventories](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#inventory-basics-formats-hosts-and-groups)
+- [how to use this source in AAP](https://docs.ansible.com/ansible-tower/latest/html/userguide/inventories.html#add-source)
 
 ## Step 5
 
@@ -117,7 +117,6 @@ Include the role redhat_cop.ee_utilities.ee_builder and have a vars section for 
 
 Further documentation for those who are interested to learn more see:
 
-- [more about include role](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_role_module.html)
 - [include vs import](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_role_module.html)
 - [ee_builder role](https://github.com/redhat-cop/ee_utilities/tree/main/roles/ee_builder)
 
