@@ -4,16 +4,16 @@ In this section we will show you step by step how to build an Execution Environm
 
 ## Step 1
 
-Ensure that you have `ansible-core` installed on your machine.
+Ensure that you have `ansible-core` and `ansible-builder` installed on your machine.
 
 ```console
-dnf install ansible-core
+dnf install ansible-core ansible-builder
 ```
 
 Further documentation for those who are interested to learn more see:
 
-- link1
-- link2
+- [upgrading from ansible to ansible-core](https://access.redhat.com/discussions/6962395)
+- [using pip (non supported upstream version)](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 
 ## Step 2
 
@@ -25,12 +25,36 @@ ansible-galaxy collection install redhat_cop.ee_utilities
 
 Further documentation for those who are interested to learn more see:
 
-- link1
-- link2
-
-### I think we need to add group_vars here actually... and make sure to add the auth.yml file
+- [installing collections using cli](https://docs.ansible.com/ansible/devel/user_guide/collections_using.html#collections)
+- [using collections in AAP](https://docs.ansible.com/ansible-tower/latest/html/userguide/projects.html#collections-support)
 
 ## Step 3
+
+Create a file in this folder path group_vars/all/auth.yml
+
+```yaml
+# User may update controller/hub auth creds to this file and encrypt it using `ansible-vault`
+---
+controller_hostname: "{{ groups['automationcontroller'][0] }}"
+controller_username: "{{ controller_user | default('admin') }}"
+controller_password: "{{ controller_pass | default('Password1234!') }}"
+controller_validate_certs: false
+
+ah_host: "{{ groups['automationhub'][0] }}"
+ah_username: "{{ ah_user | default('admin') }}"
+ah_password: "{{ ah_pass | default('Password1234!') }}"
+ah_path_prefix: 'galaxy' # this is for private automation hub
+ah_verify_ssl: false
+ah_validate_certs: false
+...
+```
+
+Further documentation for those who are interested to learn more see:
+
+- [more about group_vars](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#organizing-host-and-group-variables)
+- link2
+
+## Step 4
 
 Create your inventory file inventory.yml, copy in the username and password into the correct fields a long with the servers. For the builder group put the automation hub server.
 
@@ -58,10 +82,10 @@ all:
 
 Further documentation for those who are interested to learn more see:
 
-- link1
-- link2
+- [more about inventories](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#inventory-basics-formats-hosts-and-groups)
+- [how to use this source in AAP](https://docs.ansible.com/ansible-tower/latest/html/userguide/inventories.html#add-source)
 
-## Step 4
+## Step 5
 
 Create a new playbook called buildEE.yml and make the hosts use the group builder (which for this lab we are using automation hub, see note) and turn gather_facts on.
 
@@ -80,7 +104,7 @@ Further documentation for those who are interested to learn more see:
 - link1
 - link2
 
-## Step 5
+## Step 6
 
 Include the role redhat_cop.ee_utilities.ee_builder and have a vars section for that include role
 
@@ -93,10 +117,10 @@ Include the role redhat_cop.ee_utilities.ee_builder and have a vars section for 
 
 Further documentation for those who are interested to learn more see:
 
-- link1
-- link2
+- [include vs import](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_role_module.html)
+- [ee_builder role](https://github.com/redhat-cop/ee_utilities/tree/main/roles/ee_builder)
 
-## Step 6
+## Step 7
 
 In the vars we will pass it a list called `ee_list` that has 4 variables per item which are:
 
@@ -122,10 +146,10 @@ ee_list:
 
 Further documentation for those who are interested to learn more see:
 
-- link1
+- [YAML lists and more](https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html)
 - link2
 
-## Step 7
+## Step 8
 
 Run the playbook pointing to the recently created inventory file and limit the run to just builder to build your new custom EE and publish it to private automation hub.
 
@@ -135,5 +159,5 @@ ansible-playbook -i inventory.yml -l builder buildEE.yml
 
 Further documentation for those who are interested to learn more see:
 
-- link1
+- [more on ansible-playbook](https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html#ansible-playbook)
 - link2
