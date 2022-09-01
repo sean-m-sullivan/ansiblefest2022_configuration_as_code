@@ -113,7 +113,7 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 5
 
-Create a playbook `hub_config.yml` and `include` the `repository` and `user` roles.
+Create a playbook `hub_config.yml` and `include` the `repository` role as the first task and `include` the `user` role as the last task.
 
 ```yaml
 ---
@@ -137,3 +137,7 @@ Further documentation for those who are interested to learn more see:
 
 - [link1]()
 - [link2]()
+
+## Step 6
+
+you do navigator here
