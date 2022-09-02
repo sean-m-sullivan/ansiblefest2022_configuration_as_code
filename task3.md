@@ -1,3 +1,3 @@
 # Intro
 
-In this section all you will be given are the objects to complete along with some screenshots of a controller that is configured with the completed code. As before you will also be provided the readme's from each of the required roles to find the required variables to complete this task.
+In this section, you will only be given a summary of the objects you need to create along with some screenshots of a controller that is configured with the completed code. You will also be provided the variables sections from the readme's for each of the required roles to help you complete this task.

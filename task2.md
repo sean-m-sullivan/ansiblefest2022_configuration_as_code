@@ -12,8 +12,7 @@ dnf install ansible-navigator
 
 Further documentation for those who are interested to learn more see:
 
-- [link1]()
-- [link2]()
+- [ansible navigator docs](https://ansible-navigator.readthedocs.io/en/latest/installation/#install-ansible-navigator)
 
 ## Step 2
 
@@ -38,8 +37,7 @@ Note: We have ah_repository_certified commented out at this time due to token is
 
 Further documentation for those who are interested to learn more see:
 
-- [link1]()
-- [link2]()
+- [ah config repository](https://github.com/redhat-cop/ah_configuration/blob/devel/roles/repository/README.md)
 
 ## Step 3
 
@@ -58,8 +56,7 @@ ah_users:
 
 Further documentation for those who are interested to learn more see:
 
-- [link1]()
-- [link2]()
+- [ah config users](https://github.com/redhat-cop/ah_configuration/blob/devel/roles/user/README.md)
 
 ## Step 4
 
@@ -108,8 +105,7 @@ ah_groups:
 
 Further documentation for those who are interested to learn more see:
 
-- [link1]()
-- [link2]()
+- [ah config groups](https://github.com/redhat-cop/ah_configuration/blob/devel/roles/group/README.md)
 
 ## Step 5
 
@@ -136,7 +132,6 @@ Create a playbook `hub_config.yml` and `include` the `repository` role as the fi
 Further documentation for those who are interested to learn more see:
 
 - [link1]()
-- [link2]()
 
 ## Step 6
 

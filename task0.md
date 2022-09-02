@@ -1,10 +1,10 @@
 # Intro
 
-In this section we will show you step by step how to add pre commit linting to a repostiory. You will be able to use this on the command line to lint your code and use it in a github repostiroy.
+In this section we will show you step by step how to add pre commit linting to a repository. You will be able to use this on the command line to lint your code and use it in a github repository.
 
 ## Step 1
 
-Ensure that you have `pre-commit` and `` installed on your machine.
+Ensure that you have `pre-commit` installed on your machine.
 
 ```console
 dnf install pre-commit
@@ -19,8 +19,6 @@ Further documentation for those who are interested to learn more see:
 Create a file in this folder path `.pre-commit-config.yml`
 
 ```yaml
-# User may update controller/hub auth creds to this file and encrypt it using `ansible-vault`
----
 ---
 repos:
   - repo: 'https://github.com/pre-commit/pre-commit-hooks'
