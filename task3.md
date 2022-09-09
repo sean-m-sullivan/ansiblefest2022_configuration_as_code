@@ -6,26 +6,34 @@ In this section, you will only be given a summary of the objects you need to cre
 
 Projects
 
-![project](assets/images/project_ah_config.png)
+![project](assets/images/projects.png)
 
 ## Step 2
 
-Creds
+Cred type
 
-![credential](assets/images/cred_aap_admin.png)
+![credential_type_input](assets/images/cred_type_input.png)
+![credential_type_injector](assets/images/cred_type_injector.png)
 
 ## Step 3
 
+Creds
+
+![credential](assets/images/cred_ah_admin.png)
+
+## Step 4
+
 Inventories
 
-![inventory](assets/images/)
-## Step 4
+![inventory](assets/images/inv_ah_config.png)
+
+## Step 5
 
 Inventory sources
 
-![inventory_source]()
+![inventory_source](assets/images/inv_source_ah_config.png)
 
-## Step 5
+## Step 6
 
 Templates
 
