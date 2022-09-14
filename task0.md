@@ -16,6 +16,8 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 2
 
+Create a file that links to the pre-commit hooks that you want to use. In our case, some general cleanup hooks, yamllint, and ansible-lint.
+
 Create a file in this folder path `.pre-commit-config.yml`
 
 ```yaml
@@ -37,6 +39,32 @@ repos:
         pass_filenames: false
         always_run: true
         entry: "ansible-lint"
+...
+```
+## Step 3
+
+To use this in github set the workflow action in a file.
+
+Create a file in this folder path `.github/workflows/pre-commit.yml`
+
+```yaml
+---
+name: Yaml and Ansible Lint
+
+on: [push, pull_request]  # yamllint disable-line rule:truthy
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - name: Install Collections
+        run: |
+          sudo apt install software-properties-common
+          sudo apt-add-repository --yes --update ppa:ansible/ansible
+          sudo apt install ansible
+      - uses: pre-commit/action@v2.0.0
 ...
 ```
 

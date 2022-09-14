@@ -1,0 +1,21 @@
+---
+all:
+  children:
+    automationcontroller:
+      hosts:
+        controller.node
+
+    automationhub:
+      hosts:
+        hub.node
+
+    builder:
+      hosts:
+        hub.node
+  vars:
+#    ansible_user: admin
+#    ansible_password: secret123
+    controller_pass: secret123
+    ah_pass: secret123
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no' # might need this, test without on lab
+...

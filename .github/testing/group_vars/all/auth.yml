@@ -1,0 +1,19 @@
+---
+controller_hostname: "{{ groups['automationcontroller'][0] }}"
+controller_username: "{{ controller_user | default('admin') }}"
+controller_password: "{{ controller_pass | default('Password1234!') }}"
+controller_validate_certs: false
+
+ah_host: "{{ groups['automationhub'][0] }}"
+ah_username: "{{ ah_user | default('admin') }}"
+ah_password: "{{ ah_pass | default('Password1234!') }}"
+ah_path_prefix: 'galaxy' # this is for private automation hub
+ah_verify_ssl: false
+ah_validate_certs: false
+
+ee_registry_username: "{{ ah_username }}"
+ee_registry_password: "{{ ah_password }}"
+ee_registry_dest: "{{ ah_host }}"
+ee_validate_certs: false
+cloud_token: eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJhZDUyMjdhMy1iY2ZkLTRjZjAtYTdiNi0zOTk4MzVhMDg1NjYifQ.eyJpYXQiOjE2NjMyMTE0NzIsImp0aSI6IjhmYTAzMmFlLTdhZTItNDI5ZS04NmJmLWE4NjVjMDgwYmRkYiIsImlzcyI6Imh0dHBzOi8vc3NvLnJlZGhhdC5jb20vYXV0aC9yZWFsbXMvcmVkaGF0LWV4dGVybmFsIiwiYXVkIjoiaHR0cHM6Ly9zc28ucmVkaGF0LmNvbS9hdXRoL3JlYWxtcy9yZWRoYXQtZXh0ZXJuYWwiLCJzdWIiOiJmOjUyOGQ3NmZmLWY3MDgtNDNlZC04Y2Q1LWZlMTZmNGZlMGNlNjpyaG4tZ3BzLXNzdWxsaXZhIiwidHlwIjoiT2ZmbGluZSIsImF6cCI6ImNsb3VkLXNlcnZpY2VzIiwibm9uY2UiOiI1NjdkNmMyYy1kZGFjLTRlZTYtYTZmMS0zZTUzMjczYzNhMzQiLCJzZXNzaW9uX3N0YXRlIjoiNzQ1OTgxMjMtNDI5Mi00NGViLTlmMjYtOGNiMjZhNzU2MmMzIiwic2NvcGUiOiJvcGVuaWQgYXBpLmlhbS5zZXJ2aWNlX2FjY291bnRzIG9mZmxpbmVfYWNjZXNzIiwic2lkIjoiNzQ1OTgxMjMtNDI5Mi00NGViLTlmMjYtOGNiMjZhNzU2MmMzIn0.IKzlAYkSn2ZuDAeLF8IreeJW0iGfCOK0KgzriP-9FiA
+...

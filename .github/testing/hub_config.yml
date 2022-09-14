@@ -1,0 +1,24 @@
+---
+- name: configure private automation hub
+  hosts: "{{ groups['automationhub'][0] }}"
+  gather_facts: false
+  connection: local
+  tasks:
+
+    - name: include repository role
+      ansible.builtin.include_role:
+        name: redhat_cop.ah_configuration.repository
+
+    - name: include repository_sync role
+      ansible.builtin.include_role:
+        name: redhat_cop.ah_configuration.repository_sync
+
+    - name: include group role
+      ansible.builtin.include_role:
+        name: redhat_cop.ah_configuration.group
+      when: ah_groups is defined
+
+    - name: include user role
+      ansible.builtin.include_role:
+        name: redhat_cop.ah_configuration.user
+...
