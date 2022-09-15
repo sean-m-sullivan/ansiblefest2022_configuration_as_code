@@ -30,7 +30,7 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 3
 
-**In the next few steps pay attention to the folder paths and make sure to put the files in the correct folders**
+### **In the next few steps pay attention to the folder paths and make sure to put the files in the correct folders**
 
 Set the variables to be used in the collections for use. These include hosts, usernames, and other variables that are reused in each role.
 

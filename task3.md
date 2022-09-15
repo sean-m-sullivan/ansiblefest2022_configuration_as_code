@@ -4,7 +4,9 @@ In this section, you will only be given a summary of the objects you need to cre
 
 ## Step 1
 
-Create a file `group_vars/all/projects.yml` and add the required information to the list `controller_projects` to configure the UI to look like the screenshot
+Create a file `group_vars/all/projects.yml` and add the required information to the list `controller_projects` to configure the UI to look like the screenshot.
+
+### What git project are we pointing at
 
 ```yaml
 ---
@@ -22,6 +24,8 @@ Further documentation for those who are interested to learn more see:
 ## Step 2
 
 Create a file `group_vars/all/credential_types.yml` and add the required information to the list `controller_credential_types` to configure the UI to look like the screenshot
+
+Make sure to keep the ssh_priv_file credential type.
 
 ```yaml
 ---
@@ -152,6 +156,8 @@ Further documentation for those who are interested to learn more see:
 
 Create a file `group_vars/all/inventory_sources.yml` and add the required information to the list `controller_inventory_sources` to configure the UI to look like the screenshot
 
+** WE never decleared an inventory files here yet, and never declared the env variable **
+
 ```yaml
 ---
 controller_inventory_sources:
@@ -202,6 +208,11 @@ Further documentation for those who are interested to learn more see:
 ## Step 6
 
 Create a file `group_vars/all/job_templates.yml` and add the required information to the list `controller_templates` to configure the UI to look like the screenshot
+
+Pay attention to the credentials attached to each job template.
+
+** remove labels from the example for build_execution_environment image **
+** need example project to test this as job templates not matching playbook causing failure **
 
 ```yaml
 ---

@@ -1,3 +1,4 @@
+---
 ah_repository_certified:
   token: "{{ cloud_token }}"
   url: https://console.redhat.com/api/automation-hub/
@@ -10,3 +11,4 @@ ah_repository_community:
     - containers.podman
     - redhat_cop.ah_configuration
     - redhat_cop.controller_configuration
+...

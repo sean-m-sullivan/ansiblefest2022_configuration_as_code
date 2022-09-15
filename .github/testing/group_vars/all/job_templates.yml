@@ -1,0 +1,50 @@
+---
+controller_templates:
+  - name: build_execution_environments
+    project: config_as_code
+    job_type: run
+    playbook: playbooks/build_ee.yml
+    inventory: execution_environments
+    execution_environment: Default execution environment
+    concurrent_jobs_enabled: false
+    verbosity: 0
+    credentials:
+      - root
+      - ah_admin
+
+  - name: build_custom_collections
+    project: config_as_code
+    job_type: run
+    playbook: playbooks/custom_collection.yml
+    inventory: custom_collections
+    execution_environment: Default execution environment
+    concurrent_jobs_enabled: false
+    verbosity: 0
+    credentials:
+      - root
+      - ah_admin
+
+  - name: ah_config
+    project: config_as_code
+    job_type: run
+    playbook: playbooks/hub_config.yml
+    inventory: ah_config
+    execution_environment: Default execution environment
+    concurrent_jobs_enabled: false
+    verbosity: 0
+    credentials:
+      - ah_admin
+
+  - name: controller_config
+    project: config_as_code
+    job_type: run
+    playbook: playbooks/controller_config.yml
+    inventory: controller_config
+    execution_environment: Default execution environment
+    concurrent_jobs_enabled: false
+    verbosity: 0
+    credentials:
+      - aap_admin
+      - ah_admin
+      - vault
+...

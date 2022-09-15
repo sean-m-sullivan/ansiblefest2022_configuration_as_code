@@ -41,6 +41,7 @@ repos:
         entry: "ansible-lint"
 ...
 ```
+
 ## Step 3
 
 To use this in github set the workflow action in a file.

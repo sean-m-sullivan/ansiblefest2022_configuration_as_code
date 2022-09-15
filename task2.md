@@ -134,18 +134,29 @@ Create a playbook `hub_config.yml` and `include` the `repository` role as the fi
 The next step is to run the playbook, for demonstration purposes we are going to show how to get the Execution Environment(EE) that was built in the previous step and run the playbook.
 
 If you wish to skip this step run the playbook this way.
+
 ```console
 ansible-playbook -i inventory.yml -l automationhub hub_config.yml
 ```
 
 Login to the automation hub using the podman login command. This will ask for a user:pass. After authenticating pull the config_as_code image.
+
 ```console
 podman login --tls-verify=false hub.node
 podman pull --tls-verify=false hub.node/config_as_code:latest
 ```
 
-Run the ansible-navigator command to execute the playbook.
+Ansible navigator takes the following commands.
+The options used are
+|CLI Option|Use|
+|:---:|:---:|
+|`eei`|execution environment to use.|
+|`i`|inventory to use.|
+|`pa`|pull arguments to use, in this case ignore tls.|
+|`m`|which mode to use, defaults to interactive.|
+
+Use these options to run the playbook in the execution environemnt.
+
 ```console
-ansible-navigator run hubconfig.yml --eei hub.node/config_as_code -i inventory -pp missing
+ansible-navigator run hub_config.yml --eei hub.node/config_as_code -i inventory --pa='--tls-verify=false' -m stdout
 ```
-Work in progress
