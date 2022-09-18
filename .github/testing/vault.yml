@@ -1,0 +1,6 @@
+---
+vault_pass: 'secret123'
+ah_pass: 'secret123'
+controller_pass: 'secret123'
+root_machine_cred: 'password'
+...

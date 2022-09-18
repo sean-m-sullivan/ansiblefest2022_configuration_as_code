@@ -1,0 +1,10 @@
+---
+ah_users:
+  - username: api
+    groups:
+      - "admin"
+    append: true
+    state: "present"
+    is_superuser: true
+    password: Password1234!
+...

@@ -1,0 +1,19 @@
+---
+controller_hostname: "{{ groups['automationcontroller'][0] }}"
+controller_username: "{{ controller_user | default('admin') }}"
+controller_password: "{{ controller_pass | default('Password1234!') }}"
+controller_validate_certs: false
+
+ah_host: "{{ groups['automationhub'][0] }}"
+ah_username: "{{ ah_user | default('admin') }}"
+ah_password: "{{ ah_pass | default('Password1234!') }}"
+ah_path_prefix: 'galaxy' #  this is for private automation hub
+ah_verify_ssl: false
+ah_validate_certs: false
+
+ee_registry_username: "{{ ah_username }}"
+ee_registry_password: "{{ ah_password }}"
+ee_registry_dest: "{{ ah_host }}"
+ee_validate_certs: false
+cloud_token: aa.bb.cc
+...
