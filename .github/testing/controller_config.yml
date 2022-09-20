@@ -47,7 +47,7 @@
         name: redhat_cop.controller_configuration.teams
       when: controller_teams is defined
 
-    #  probably not optimal but works, looking for better solutions
+#  probably not optimal but works, looking for better solutions
     - name: Figuring out AH token
       block:
         - name: Authenticate and get an API token from Automation Hub
@@ -63,7 +63,7 @@
           ansible.builtin.set_fact:
             ah_token: "{{ ah_token['token'] }}"
           when: r_ah_token['changed']
-       # what needs to be done to guarantee this to work?
+# what needs to be done to guarantee this to work?
 #      rescue:
       when: ah_token is not defined or ah_token['token'] is defined
 
