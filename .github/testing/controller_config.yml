@@ -47,7 +47,7 @@
         name: redhat_cop.controller_configuration.teams
       when: controller_teams is defined
 
-#  probably not optimal but works, looking for better solutions
+    #  probably not optimal but works, looking for better solutions
     - name: Figuring out AH token
       block:
         - name: Authenticate and get an API token from Automation Hub
@@ -55,7 +55,7 @@
             ah_host: "{{ ah_host | default(groups['automationhub'][0]) }}"
             ah_username: "{{ ah_username | default('admin') }}"
             ah_password: "{{ ah_password | default('Password1234!') }}"
-            ah_path_prefix: 'galaxy' #  this is for private automation hub
+            ah_path_prefix: 'galaxy'  # this is for private automation hub
             ah_verify_ssl: false
           register: r_ah_token
 
@@ -63,8 +63,8 @@
           ansible.builtin.set_fact:
             ah_token: "{{ ah_token['token'] }}"
           when: r_ah_token['changed']
-# what needs to be done to guarantee this to work?
-#      rescue:
+      # what needs to be done to guarantee this to work?
+    # rescue:
       when: ah_token is not defined or ah_token['token'] is defined
 
     - name: update credentials
@@ -82,7 +82,7 @@
           vars:
             _current_cred_types: "{{ lookup('awx.awx.tower_api', 'credential_types', query_params={ 'namespace__isnull': true } ,host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
             controller_configuration_credentials_secure_logging: false
-#            _current_cred_types: "{{ lookup('ansible.controller.controller_api', 'credential_types', query_params={ 'namespace__isnull': true } ,host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
+          # _current_cred_types: "{{ lookup('ansible.controller.controller_api', 'credential_types', query_params={ 'namespace__isnull': true } ,host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
 
         - name: pulling credentials list
           ansible.builtin.set_fact:
@@ -90,13 +90,13 @@
           loop: "{{ _current_credentials }}"
           vars:
             _current_credentials: "{{ lookup('awx.awx.tower_api', 'credentials', host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
-#            _current_cred_types: "{{ lookup('ansible.controller.controller_api', 'credentials', host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
+          # _current_cred_types: "{{ lookup('ansible.controller.controller_api', 'credentials', host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
 
         - name: include credential_types role
           ansible.builtin.include_role:
             name: redhat_cop.controller_configuration.credentials
             apply:
-              ignore_errors: true #  need to ignore errors because you cannot delete default ansible galaxy and container registry creds which will error
+              ignore_errors: true  # need to ignore errors because you cannot delete default ansible galaxy and container registry creds which will error
           vars:
             controller_credentials: "{{ cf_current_credentials }}"
             controller_configuration_credentials_secure_logging: false
@@ -148,9 +148,9 @@
         name: redhat_cop.controller_configuration.inventory_sources
       when: controller_inventory_sources is defined
 
-#    - name: include inventory_source_update role
-#      ansible.builtin.include_role:
-#        name: redhat_cop.controller_configuration.inventory_source_update
+    # - name: include inventory_source_update role
+    #   ansible.builtin.include_role:
+    #     name: redhat_cop.controller_configuration.inventory_source_update
 
     - name: include groups role
       ansible.builtin.include_role:

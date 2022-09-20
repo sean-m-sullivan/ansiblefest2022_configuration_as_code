@@ -10,7 +10,7 @@ MD003:
 # Setting to false to match the yamllint setting
 MD013: false
 
-#MD033/no-inline-html: Inline HTML
+# MD033/no-inline-html: Inline HTML
 MD033: false
 
 # MD046/code-block-style - Code block style
