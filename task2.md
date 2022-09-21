@@ -141,12 +141,10 @@ ansible-playbook -i inventory.yml -l automationhub hub_config.yml
 
 Login to the automation hub using the podman login command. This will ask for a user:pass. After authenticating pull the config_as_code image.
 
-
 ```console
 podman login --tls-verify=false hub.node
 podman pull --tls-verify=false hub.node/config_as_code:latest
 ```
-
 
 Ansible navigator takes the following commands.
 The options used are

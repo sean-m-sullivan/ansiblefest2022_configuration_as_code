@@ -64,7 +64,7 @@
             ah_token: "{{ ah_token['token'] }}"
           when: r_ah_token['changed']
       # what needs to be done to guarantee this to work?
-    # rescue:
+      # rescue:
       when: ah_token is not defined or ah_token['token'] is defined
 
     - name: update credentials
@@ -82,7 +82,7 @@
           vars:
             _current_cred_types: "{{ lookup('awx.awx.tower_api', 'credential_types', query_params={ 'namespace__isnull': true } ,host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
             controller_configuration_credentials_secure_logging: false
-          # _current_cred_types: "{{ lookup('ansible.controller.controller_api', 'credential_types', query_params={ 'namespace__isnull': true } ,host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
+            # _current_cred_types: "{{ lookup('ansible.controller.controller_api', 'credential_types', query_params={ 'namespace__isnull': true } ,host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
 
         - name: pulling credentials list
           ansible.builtin.set_fact:
@@ -90,7 +90,7 @@
           loop: "{{ _current_credentials }}"
           vars:
             _current_credentials: "{{ lookup('awx.awx.tower_api', 'credentials', host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
-          # _current_cred_types: "{{ lookup('ansible.controller.controller_api', 'credentials', host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
+            # _current_cred_types: "{{ lookup('ansible.controller.controller_api', 'credentials', host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
 
         - name: include credential_types role
           ansible.builtin.include_role:
