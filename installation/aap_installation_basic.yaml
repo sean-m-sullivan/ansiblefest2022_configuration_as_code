@@ -10,7 +10,6 @@
     aap_setup_rhel_version: 9
   vars_files:
     - inventory_vars/variables.yml
-  pre_tasks:
   roles:
     - redhat_cop.aap_utilities.aap_setup_download
     - redhat_cop.aap_utilities.aap_setup_prepare
