@@ -7,7 +7,7 @@ controller_validate_certs: false
 ah_host: "{{ groups['automationhub'][0] }}"
 ah_username: "{{ ah_user | default('admin') }}"
 ah_password: "{{ ah_pass | default('Password1234!') }}"
-ah_path_prefix: 'galaxy' #  this is for private automation hub
+ah_path_prefix: 'galaxy'  # this is for private automation hub
 ah_verify_ssl: false
 ah_validate_certs: false
 
