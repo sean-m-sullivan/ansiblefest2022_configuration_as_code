@@ -20,15 +20,17 @@ Create a file `group_vars/all/ah_repositories.yml` you will need to add `redhat_
 
 ```yaml
 ---
-# ah_repository_certified:
-#   token: "{{ cloud_token }}"
-#   url: 'https://console.redhat.com/api/automation-hub/content/5910538-synclist/'
-#   auth_url: 'https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token'
+ah_repository_certified:
+  token: "{{ cloud_token }}"
+  url: 'https://console.redhat.com/api/automation-hub/content/'
+  auth_url: 'https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token'
 
 ah_repository_community:
   requirements:
-    - redhat_cop.aap_utilities
+    - redhat_cop.controller_configuration
+    - redhat_cop.ah_configuration
     - redhat_cop.ee_utilities
+    - redhat_cop.aap_utilities
     - containers.podman
 ...
 ```
@@ -41,10 +43,11 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 3
 
-Create a file `group_vars/all/ah_users.yml` make sure this user has `is_superuser` set to `true` and their `password` is set to `Password1234!`.
+Create a file `group_vars/all/ah_users.yml` make sure this user has `is_superuser` set to `true` and their `password` is set to `"{{ ah_api_user_pass }}"`.
 
 ```yaml
 ---
+ah_token_username: api
 ah_users:
   - username: api
     groups:
@@ -117,6 +120,8 @@ Create a playbook `hub_config.yml` and `include` the `repository` role as the fi
   hosts: "{{ groups['automationhub'][0] }}"
   gather_facts: false
   connection: local
+  vars_files:
+    - "vault.yml"
   tasks:
     - name: include repository_sync role
       ansible.builtin.include_role:
