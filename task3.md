@@ -246,6 +246,7 @@ root_machine_cred: ''
 
 Create a playbook `controller_config.yml`
 
+{% raw %}
 ```yaml
 ---
 - name: Playbook to configure ansible controller post installation
@@ -431,3 +432,4 @@ Create a playbook `controller_config.yml`
       when: controller_roles is defined
 ...
 ```
+{% endraw %}
