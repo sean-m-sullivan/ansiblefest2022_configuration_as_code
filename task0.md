@@ -7,8 +7,10 @@ In this section we will show you step by step how to add pre commit linting to a
 Ensure that you have `pre-commit` installed on your machine.
 
 ```console
-dnf install pre-commit
+pip3 install pre-commit
 ```
+
+NOTE: Normally we would suggest `dnf install pre-commit` but in this lab we will have to use pip3
 
 Further documentation for those who are interested to learn more see:
 
@@ -72,3 +74,28 @@ jobs:
 Further documentation for more hooks that can be added can be found here:
 
 - [Supported hooks](https://pre-commit.com/hooks.html)
+
+## Step 4
+
+Now lets create some git files.
+
+Create a file `.gitignore` which we will use to tell git to not include some files.
+
+```text
+.password
+ansible-navigator.log
+*.json
+```
+
+Next let's create a `.gitattributes` file
+
+```text
+*.yml linguist-detectable
+*.yaml linguist-detectable
+```
+
+Further documentation for more hooks that can be added can be found here:
+
+- [git ignore](https://git-scm.com/docs/gitignore)
+- [git attributes](https://git-scm.com/docs/gitattributes)
+- [github linguist](https://github.com/github/linguist/blob/master/docs/how-linguist-works.md)

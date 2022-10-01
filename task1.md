@@ -105,9 +105,16 @@ vault_pass: 'the password to decrypt this vault'
 ...
 ```
 
+Create a `.password` file put your generated password in this file. (remember we are not committing this file into git because we have it in our ignore list)
+
+```text
+Generated_Password
+```
+
 Further documentation for those who are interested to learn more see:
 
 - [ansible vaults](https://docs.ansible.com/ansible/latest/user_guide/vault.html)
+- [vault with navigator](https://ansible-navigator.readthedocs.io/en/latest/faq/#how-can-i-use-a-vault-password-with-ansible-navigator)
 
 ## Step 6
 

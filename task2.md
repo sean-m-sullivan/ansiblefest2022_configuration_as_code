@@ -137,9 +137,11 @@ Create a playbook `hub_config.yml` and `include` the `repository` role as the fi
 
 The next step is to run the playbook, for demonstration purposes we are going to show how to get the Execution Environment(EE) that was built in the previous step and run the playbook.
 
-If you wish to skip this step run the playbook this way.
+If you wish to skip this step run the playbook this way[^1][^2].
 
-```console
+[^1]: `ansible-galaxy install redhat_cop.ah_configuration` then `ansible-playbook -i inventory.yml -l automationhub hub_config.yml`
+
+```[^2]
 ansible-galaxy install redhat_cop.ah_configuration
 ansible-playbook -i inventory.yml -l automationhub hub_config.yml
 ```
@@ -153,6 +155,7 @@ podman pull --tls-verify=false hub.node/config_as_code:latest
 
 Ansible navigator takes the following commands.
 The options used are
+
 |CLI Option|Use|
 |:---:|:---:|
 |`eei`|execution environment to use.|
