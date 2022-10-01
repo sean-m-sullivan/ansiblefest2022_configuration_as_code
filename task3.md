@@ -208,6 +208,7 @@ Further documentation for those who are interested to learn more see:
 Create a playbook `controller_config.yml`
 
 {% raw %}
+
 ```yaml
 ---
 - name: Playbook to configure ansible controller post installation
@@ -353,4 +354,5 @@ Create a playbook `controller_config.yml`
       when: controller_roles is defined
 ...
 ```
+
 {% endraw %}

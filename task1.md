@@ -39,12 +39,12 @@ Create a file in this folder path `group_vars/all/auth.yml`
 ```yaml
 ---
 controller_hostname: "{{ groups['automationcontroller'][0] }}"
-controller_username: "{{ controller_user }}"
+controller_username: "{{ controller_user | default('admin') }}"
 controller_password: "{{ controller_pass }}"
 controller_validate_certs: false
 
 ah_host: "{{ groups['automationhub'][0] }}"
-ah_username: "{{ ah_user }}"
+ah_username: "{{ ah_user | default('admin') }}"
 ah_password: "{{ ah_pass }}"
 ah_path_prefix: 'galaxy' # this is for private automation hub
 ah_verify_ssl: false
