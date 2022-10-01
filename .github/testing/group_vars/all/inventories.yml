@@ -1,18 +1,6 @@
 ---
 controller_inventories:
-  - name: controller_config
+  - name: config_as_code
     description: inventory for configuring controller
-    organization: config_as_code
-
-  - name: custom_collections
-    description: inventory for building custom collections
-    organization: config_as_code
-
-  - name: execution_environments
-    description: inventory for building execution environments
-    organization: config_as_code
-
-  - name: ah_config
-    description: inventory for building execution environments
     organization: config_as_code
 ...

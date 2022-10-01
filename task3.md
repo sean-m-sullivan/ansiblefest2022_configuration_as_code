@@ -32,13 +32,14 @@ Make sure to keep the ssh_priv_file credential type.
 controller_credential_types:
   - name: ssh_priv_file
     kind: cloud
-    description: creates temp ssh priv key to use
+    description: creates temp ssh priv key to use (cannot have passphrase)
     inputs:
       fields:
         - id: priv_key
           type: string
           label: Certificate
           format: ssh_private_key
+          multiline: true
           secret: true
     injectors:
       env:
@@ -72,13 +73,13 @@ controller_credentials:
       password: "{{ controller_password }}"
       verify_ssl: false
 
-  - name: ah_api_token
+  - name: ah_token_user
     credential_type: automation_hub
     organization: config_as_code
     description: automation hub api account
     inputs:
       hostname: "{{ ah_host }}"
-      username: "api"
+      username: "{{ ah_token_username }}"
       token: "{{ ah_token }}"
       verify_ssl: false
 
@@ -112,14 +113,7 @@ controller_credentials:
       password: "{{ ah_password }}"
       verify_ssl: false
 
-  - name: gitlab-config_as_code
-    credential_type: Source Control
-    organization: config_as_code
-    description: access to gitlab
-    inputs:
-      username: "oauth2"
-      password: "{{ gitlab_full_config }}"
-
+# might need to change for the student account
   - name: root
     credential_type: Machine
     organization: config_as_code
@@ -138,6 +132,7 @@ controller_credentials:
 ```
 
 ![credential](assets/images/cred_ah_admin.png)
+![add github screenshot]()
 
 Further documentation for those who are interested to learn more see:
 
@@ -220,14 +215,14 @@ Create a playbook `controller_config.yml`
     - name: include setting role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.settings
-      when: controller_settings is defined
+      when: controller_settings | length is not match('0')
 
     - name: create organizations without credentials
       ansible.builtin.set_fact:
         orgs_no_creds: "{{ orgs_no_creds | default([]) + [{ 'name' : item.name }] }}"
       loop: "{{ controller_organizations }}"
       when:
-        - controller_organizations is defined
+        - controller_organizations | length is not match('0')
         - (item.state | default('Present')) != 'absent'
 
     - name: print out custom fact
@@ -240,24 +235,24 @@ Create a playbook `controller_config.yml`
         name: redhat_cop.controller_configuration.organizations
       vars:
         controller_organizations: "{{ orgs_no_creds }}"
-      when: orgs_no_creds is defined
+      when: orgs_no_creds | length is not match('0')
 
     - name: include labels role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.labels
-      when: controller_labels is defined
+      when: controller_labels | length is not match('0')
 
     - name: include users role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.users
       vars:
         controller_configuration_users_secure_logging: true
-      when: controller_user_accounts is defined
+      when: controller_user_accounts | length is not match('0')
 
     - name: include teams role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.teams
-      when: controller_teams is defined
+      when: controller_teams | length is not match('0')
 
    # probably not optimal but works, looking for better solutions
     - name: Figuring out AH token
@@ -280,44 +275,44 @@ Create a playbook `controller_config.yml`
     - name: include credential_types role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.credential_types
-      when: controller_credential_types is defined
+      when: controller_credential_types | length is not match('0')
 
     - name: include credential role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.credentials
       vars:
         controller_configuration_credentials_secure_logging: true
-      when: controller_credentials is defined
+      when: controller_credentials | length is not match('0')
 
     - name: include credential_input_sources role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.credential_input_sources
-      when: controller_credential_input_sources is defined
+      when: controller_credential_input_sources | length is not match('0')
 
     - name: include organizations role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.organizations
-      when: controller_organizations is defined
+      when: controller_organizations | length is not match('0')
 
     - name: include execution_environments role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.execution_environments
-      when: controller_execution_environments is defined
+      when: controller_execution_environments | length is not match('0')
 
     - name: include projects role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.projects
-      when: controller_projects is defined
+      when: controller_projects | length is not match('0')
 
     - name: include inventories role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.inventories
-      when: controller_inventories is defined
+      when: controller_inventories | length is not match('0')
 
     - name: include inventory_sources role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.inventory_sources
-      when: controller_inventory_sources is defined
+      when: controller_inventory_sources | length is not match('0')
 
     - name: include inventory_source_update role
       ansible.builtin.include_role:
@@ -326,32 +321,32 @@ Create a playbook `controller_config.yml`
     - name: include groups role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.groups
-      when: controller_groups is defined
+      when: controller_groups | length is not match('0')
 
     - name: include applications role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.applications
-      when: controller_applications is defined
+      when: controller_applications | length is not match('0')
 
     - name: include job_templates role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.job_templates
-      when: controller_templates is defined
+      when: controller_templates | length is not match('0')
 
     - name: include workflow_job_templates role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.workflow_job_templates
-      when: controller_workflows is defined
+      when: controller_workflows | length is not match('0')
 
     - name: include schedules role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.schedules
-      when: controller_schedules is defined
+      when: controller_schedules | length is not match('0')
 
     - name: include roles role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.roles
-      when: controller_roles is defined
+      when: controller_roles | length is not match('0')
 ...
 ```
 

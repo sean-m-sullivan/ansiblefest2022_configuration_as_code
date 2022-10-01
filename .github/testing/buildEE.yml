@@ -3,7 +3,6 @@
   hosts: builder
   gather_facts: false
   tasks:
-
     - name: include ee_builder role
       ansible.builtin.include_role:
         name: redhat_cop.ee_utilities.ee_builder

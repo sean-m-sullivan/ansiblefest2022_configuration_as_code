@@ -2,11 +2,13 @@
 controller_projects:
   - name: config_as_code
     description: execution environments configurations
-    scm_type: git
-    scm_url: https://github.com/ansible/test-playbooks.git
-    scm_branch: master
-    scm_clean: true
     organization: config_as_code
-    wait: true
+    scm_type: git
+    scm_url: git@github.com:redhat-cop/aap_configuration_template.git
+    scm_branch: "{{ scm_branch }}"
+    scm_clean: true
+    scm_update_on_launch: true
+    scm_credential: "github"
     update_project: true
+    wait: true
 ...

@@ -20,17 +20,19 @@ Create a file `group_vars/all/ah_repositories.yml` you will need to add `redhat_
 
 ```yaml
 ---
-ah_repository_certified:
-  token: "{{ cloud_token }}"
-  url: 'https://console.redhat.com/api/automation-hub/content/'
-  auth_url: 'https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token'
+# ah_repository_certified:
+#   token: "{{ cloud_token }}"
+#   url: 'https://console.redhat.com/api/automation-hub/'
+#   auth_url: 'https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token'
+#   wait: true
 
 ah_repository_community:
   requirements:
-    - redhat_cop.ee_utilities
     - redhat_cop.aap_utilities
+    - redhat_cop.ee_utilities
     - containers.podman
     - awx.awx
+  wait: true
 ...
 ```
 
@@ -42,13 +44,13 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 3
 
-Create a file `group_vars/all/ah_users.yml` make sure this user has `is_superuser` set to `true` and their `password` is set to `"{{ ah_api_user_pass }}"`.
+Create a file `group_vars/all/ah_users.yml` make sure this user has `is_superuser` set to `true` and their `password` is set to `"{{ ah_token_password }}"`.
 
 ```yaml
 ---
-ah_token_username: api
+ah_token_username: token_user
 ah_users:
-  - username: api
+  - username: token_user
     groups:
       - "admin"
     append: true
@@ -115,21 +117,21 @@ Create a playbook `hub_config.yml` and `include` the `repository` role as the fi
 
 ```yaml
 ---
-- name: configure private automation hub
-  hosts: "all"
+- name: configure private automation hub after installation
+  hosts: all
   gather_facts: false
   connection: local
   vars_files:
     - "vault.yml"
   tasks:
-    - name: include repository_sync role
+    - name: include repository sync role
       ansible.builtin.include_role:
         name: redhat_cop.ah_configuration.repository_sync
 
     - name: include group role
       ansible.builtin.include_role:
         name: redhat_cop.ah_configuration.group
-      when: ah_groups is defined
+      when: ah_groups | length is not match('0')
 ...
 ```
 

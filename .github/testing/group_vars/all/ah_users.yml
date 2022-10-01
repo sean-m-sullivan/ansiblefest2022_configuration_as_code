@@ -6,5 +6,5 @@ ah_users:
     append: true
     state: "present"
     is_superuser: true
-    password: Password1234!
+    password: secret123
 ...
