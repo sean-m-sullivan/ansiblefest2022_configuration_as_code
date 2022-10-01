@@ -7,7 +7,7 @@ In this section you will configure your private automation hub using the code pr
 Ensure that you have `ansible-navigator` installed on your machine.
 
 ```console
-dnf install ansible-navigator
+sudo dnf install ansible-navigator
 ```
 
 Further documentation for those who are interested to learn more see:
@@ -27,11 +27,10 @@ ah_repository_certified:
 
 ah_repository_community:
   requirements:
-    - redhat_cop.controller_configuration
-    - redhat_cop.ah_configuration
     - redhat_cop.ee_utilities
     - redhat_cop.aap_utilities
     - containers.podman
+    - awx.awx
 ...
 ```
 
@@ -117,7 +116,7 @@ Create a playbook `hub_config.yml` and `include` the `repository` role as the fi
 ```yaml
 ---
 - name: configure private automation hub
-  hosts: "{{ groups['automationhub'][0] }}"
+  hosts: "all"
   gather_facts: false
   connection: local
   vars_files:
@@ -141,6 +140,7 @@ The next step is to run the playbook, for demonstration purposes we are going to
 If you wish to skip this step run the playbook this way.
 
 ```console
+ansible-galaxy install redhat_cop.ah_configuration
 ansible-playbook -i inventory.yml -l automationhub hub_config.yml
 ```
 
@@ -160,8 +160,8 @@ The options used are
 |`pa`|pull arguments to use, in this case ignore tls.|
 |`m`|which mode to use, defaults to interactive.|
 
-Use these options to run the playbook in the execution environemnt.
+Use these options to run the playbook in the execution environment.
 
 ```console
-ansible-navigator run hub_config.yml --eei hub.node/config_as_code -i inventory --pa='--tls-verify=false' -m stdout
+ansible-navigator run hub_config.yml --eei hub.node/config_as_code -i inventory.yml -l automationhub --pa='--tls-verify=false' -m stdout
 ```

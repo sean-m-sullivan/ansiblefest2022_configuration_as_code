@@ -7,7 +7,7 @@ In this section we will show you step by step how to build an Execution Environm
 Ensure that you have `ansible-core` and `ansible-builder` installed on your machine.
 
 ```console
-dnf install ansible-core ansible-builder
+sudo dnf install ansible-core ansible-builder
 ```
 
 Further documentation for those who are interested to learn more see:
@@ -39,12 +39,12 @@ Create a file in this folder path `group_vars/all/auth.yml`
 ```yaml
 ---
 controller_hostname: "{{ groups['automationcontroller'][0] }}"
-controller_username: "{{ controller_user | default('admin') }}"
+controller_username: "{{ controller_user }}"
 controller_password: "{{ controller_pass }}"
 controller_validate_certs: false
 
 ah_host: "{{ groups['automationhub'][0] }}"
-ah_username: "{{ ah_user | default('admin') }}"
+ah_username: "{{ ah_user }}"
 ah_password: "{{ ah_pass }}"
 ah_path_prefix: 'galaxy' # this is for private automation hub
 ah_verify_ssl: false
@@ -71,15 +71,15 @@ all:
   children:
     automationcontroller:
       hosts:
-        HOST_HERE
+        HOST_HERE:
 
     automationhub:
       hosts:
-        HOST_HERE
+        HOST_HERE:
 
     builder:
       hosts:
-        SAME_AS_HUB
+        VSCODE_HOST:
 ...
 ```
 
@@ -98,7 +98,7 @@ cloud_token: 'this is the one from console.redhat.com'
 root_machine_pass: 'password for root user on hub'
 ah_api_user_pass: 'this will create and use this password can be generated'
 controller_api_user_pass: 'this will create and use this password can be generated'
-controller_pass: 'admin account pass for controller'
+controller_pass: 'account pass for controller'
 ah_pass: 'hub admin account pass'
 ah_token_password: "{{ ah_api_user_pass }}"
 vault_pass: 'the password to decrypt this vault'
@@ -120,6 +120,7 @@ Note: this we would normally suggest being a small cli only server for deploying
 - name: playbook to configure execution environments
   hosts: builder
   gather_facts: true
+  vars_files: "vault.yml"
   tasks:
     - name: include ee_builder role
       ansible.builtin.include_role:
@@ -156,6 +157,7 @@ ee_list:
       - name: redhat_cop.ah_configuration
       - name: redhat_cop.ee_utilities
       - name: redhat_cop.aap_utilities
+      - name: awx.awx
 
 ee_image_push: true
 ee_create_ansible_config: false
