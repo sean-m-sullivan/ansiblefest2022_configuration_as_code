@@ -20,7 +20,7 @@ Further documentation for those who are interested to learn more see:
 Install our ee_utilities collection and containers.podman using `ansible-galaxy` command.
 
 ```console
-ansible-galaxy collection install redhat_cop.ee_utilities containers.podman
+ansible-galaxy collection install redhat_cop.ee_utilities containers.podman community.general
 ```
 
 Further documentation for those who are interested to learn more see:
@@ -56,6 +56,7 @@ ee_registry_username: "{{ ah_username }}"
 ee_registry_password: "{{ ah_password }}"
 ee_registry_dest: "{{ ah_host }}"
 ...
+
 ```
 
 {% endraw %}
@@ -84,6 +85,7 @@ all:
       hosts:
         VSCODE_HOST:
 ...
+
 ```
 
 Further documentation for those who are interested to learn more see:
@@ -106,6 +108,7 @@ ah_pass: 'hub admin account pass'
 ah_token_password: "{{ ah_api_user_pass }}"
 vault_pass: 'the password to decrypt this vault'
 ...
+
 ```
 
 Create a `.password` file put your generated password in this file. (remember we are not committing this file into git because we have it in our ignore list)
@@ -136,6 +139,7 @@ Note: this we would normally suggest being a small cli only server for deploying
       ansible.builtin.include_role:
         name: redhat_cop.ee_utilities.ee_builder
 ...
+
 ```
 
 Further documentation for those who are interested to learn more see:
@@ -158,10 +162,11 @@ which the role will loop over and for each item in this list it will create and 
 - redhat_cop.ah_configuration
 - redhat_cop.ee_utilities
 
+
 ```yaml
 ---
 ee_list:
-  - ee_name: config_as_code
+  - ee_name: config_as_code_student#  # use your student # here.
     collections:
       - name: redhat_cop.controller_configuration
       - name: redhat_cop.ah_configuration

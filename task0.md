@@ -10,6 +10,7 @@ If you are using the Workshop, a Workshop project should be available in your VS
 Ensure that you have `pre-commit` installed on your machine.
 
 ```console
+sudo pip3 install --upgrade pip
 sudo pip3.9 install pre-commit
 ```
 
@@ -52,6 +53,7 @@ repos:
           - "ansible-core>=2.13"
           - "yamllint>=1.26,<2.0"
 ...
+
 ```
 
 Create a yaml lint file `.yamllint.yml` to hold our yaml rules.
@@ -85,6 +87,7 @@ rules:
       - 'true'
       - 'false'
 ...
+
 ```
 
 Further documentation for more hooks that can be added can be found here:
@@ -117,6 +120,7 @@ jobs:
           sudo apt install ansible
       - uses: pre-commit/action@v2.0.0
 ...
+
 ```
 
 Further documentation for more hooks that can be added can be found here:
