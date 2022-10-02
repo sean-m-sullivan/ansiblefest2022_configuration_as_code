@@ -132,7 +132,7 @@ controller_credentials:
 ```
 
 ![credential](assets/images/cred_ah_admin.png)
-![add github screenshot]()
+![add github screenshot](assets/images/cred_github.png)
 
 Further documentation for those who are interested to learn more see:
 
@@ -149,7 +149,7 @@ controller_inventories:
 ...
 ```
 
-![inventory](assets/images/inv_ah_config.png)
+![inventory](assets/images/inventory.png)
 
 Further documentation for those who are interested to learn more see:
 
@@ -167,7 +167,7 @@ controller_inventory_sources:
 ...
 ```
 
-![inventory_source](assets/images/inv_source_ah_config.png)
+![inventory_source](assets/images/inventory_source.png)
 
 Further documentation for those who are interested to learn more see:
 
