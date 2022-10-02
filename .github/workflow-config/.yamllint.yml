@@ -3,6 +3,7 @@ extends: default
 
 ignore: |
   changelogs
+  .github/workflows/pages.yml
 rules:
   # 80 chars should be enough, but don't fail if a line is longer
   line-length: disable

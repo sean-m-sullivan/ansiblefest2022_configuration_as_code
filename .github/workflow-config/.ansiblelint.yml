@@ -5,9 +5,9 @@
 # exclude_paths:
 #  - roles/master_role_example/
 exclude_paths:
-- '.github/'
-- 'roles/master_role_example/'
-- 'changelogs/'
+  - '.github/'
+  - 'roles/master_role_example/'
+  - 'changelogs/'
 parseable: true
 use_default_rules: true
 # https://github.com/ansible/ansible-lint/issues/808
