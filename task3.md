@@ -351,3 +351,5 @@ Create a playbook `controller_config.yml`
 ```
 
 {% endraw %}
+
+[previous task](task2.md)<div align="right">[next task](task4.md)</div>

@@ -138,3 +138,5 @@ Further documentation for more hooks that can be added can be found here:
 - [git ignore](https://git-scm.com/docs/gitignore)
 - [git attributes](https://git-scm.com/docs/gitattributes)
 - [github linguist](https://github.com/github/linguist/blob/master/docs/how-linguist-works.md)
+
+<div align="right">[next task](task1.md)</div>
