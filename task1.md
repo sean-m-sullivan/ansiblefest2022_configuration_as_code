@@ -36,6 +36,8 @@ Set the variables to be used in the collections for use. These include hosts, us
 
 Create a file in this folder path `group_vars/all/auth.yml`
 
+{% raw %}
+
 ```yaml
 ---
 controller_hostname: "{{ groups['automationcontroller'][0] }}"
@@ -56,10 +58,11 @@ ee_registry_dest: "{{ ah_host }}"
 ...
 ```
 
+{% endraw %}
+
 Further documentation for those who are interested to learn more see:
 
 - [more about group_vars](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#organizing-host-and-group-variables)
-- link2
 
 ## Step 4
 
@@ -187,4 +190,5 @@ ansible-playbook -i inventory.yml -l builder buildEE.yml
 Further documentation for those who are interested to learn more see:
 
 - [more on ansible-playbook](https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html#ansible-playbook)
-- link2
+
+[previous task](task0.md) [next task](task2.md)
