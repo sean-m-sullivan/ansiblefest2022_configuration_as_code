@@ -78,6 +78,11 @@ rules:
 ...
 ```
 
+Further documentation for more hooks that can be added can be found here:
+
+- [pre-commit config](https://pre-commit.com/#pre-commit-configyaml---top-level)
+- [yamllint](https://yamllint.readthedocs.io/en/stable/)
+
 ## Step 3
 
 To use this in github set the workflow action in a file.
