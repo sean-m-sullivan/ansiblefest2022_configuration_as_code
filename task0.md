@@ -1,6 +1,6 @@
 # Intro
 
-In this section we will show you step by step how to add pre commit linting to a repository. You will be able to use this on the command line to lint your code and use it in a github repository.
+In this section we will show you step by step how to add pre commit linting to a repository. You will be able to use this on the command line to lint your code and use it in a github repository. The lab already has git repo created and cloned onto your vscode instance.
 
 ## Pre Steps
 If you are using the Workshop, a Workshop project should be available in your VSCode for you to push to the Workshop Gitea server. Create the files in this project folder.
@@ -14,6 +14,12 @@ sudo pip3.9 install pre-commit
 ```
 
 NOTE: Normally we would suggest `dnf install pre-commit` but in this lab we will have to use pip3
+
+Next, configure pre-commit to a pre-hook action.
+
+```console
+pre-commit install
+```
 
 Further documentation for those who are interested to learn more see:
 
@@ -141,3 +147,15 @@ Further documentation for more hooks that can be added can be found here:
 - [git ignore](https://git-scm.com/docs/gitignore)
 - [git attributes](https://git-scm.com/docs/gitattributes)
 - [github linguist](https://github.com/github/linguist/blob/master/docs/how-linguist-works.md)
+
+## Step 5
+
+Commit your current work so far. (note we won't mention it again but you should commit and push at the end of each section)
+
+```console
+git add .
+git commit -am "task0 complete"
+git push origin master
+```
+
+[next task](task1.md)
