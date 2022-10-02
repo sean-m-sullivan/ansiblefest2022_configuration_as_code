@@ -23,9 +23,11 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 2
 
-Create a file `group_vars/all/credential_types.yml` and add the required information to the list `controller_credential_types` to configure the UI to look like the screenshot
+Create a file `group_vars/all/credential_types.yml` and add the required information to the list `controller_credential_types` to create also credential type called `automation_hub` with the values from the screenshot.
 
 Make sure to keep the ssh_priv_file credential type.
+
+{% raw %}
 
 ```yaml
 ---
@@ -49,6 +51,8 @@ controller_credential_types:
 ...
 ```
 
+{% endraw %}
+
 ![credential_type_input](assets/images/cred_type_input.png)
 ![credential_type_injector](assets/images/cred_type_injector.png)
 
@@ -59,6 +63,8 @@ Further documentation for those who are interested to learn more see:
 ## Step 3
 
 Create a file `group_vars/all/credentials.yml` and add the required information to the list `controller_credentials` to configure the UI to look like the screenshot
+
+{% raw %}
 
 ```yaml
 ---
@@ -130,6 +136,8 @@ controller_credentials:
       vault_password: "{{ vault_pass }}"
 ...
 ```
+
+{% endraw %}
 
 ![credential](assets/images/cred_ah_admin.png)
 ![add github screenshot](assets/images/cred_github.png)

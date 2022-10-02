@@ -36,6 +36,8 @@ Set the variables to be used in the collections for use. These include hosts, us
 
 Create a file in this folder path `group_vars/all/auth.yml`
 
+{% raw %}
+
 ```yaml
 ---
 controller_hostname: "{{ groups['automationcontroller'][0] }}"
@@ -55,6 +57,8 @@ ee_registry_password: "{{ ah_password }}"
 ee_registry_dest: "{{ ah_host }}"
 ...
 ```
+
+{% endraw %}
 
 Further documentation for those who are interested to learn more see:
 
