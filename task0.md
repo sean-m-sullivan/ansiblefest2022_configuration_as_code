@@ -2,12 +2,15 @@
 
 In this section we will show you step by step how to add pre commit linting to a repository. You will be able to use this on the command line to lint your code and use it in a github repository.
 
+## Pre Steps
+If you are using the Workshop, a Workshop project should be available in your VSCode for you to push to the Workshop Gitea server. Create the files in this project folder.
+
 ## Step 1
 
 Ensure that you have `pre-commit` installed on your machine.
 
 ```console
-pip3 install pre-commit
+sudo pip3.9 install pre-commit
 ```
 
 NOTE: Normally we would suggest `dnf install pre-commit` but in this lab we will have to use pip3
@@ -20,7 +23,7 @@ Further documentation for those who are interested to learn more see:
 
 Create a file that links to the pre-commit hooks that you want to use. In our case, some general cleanup hooks, yamllint, and ansible-lint.
 
-Create a file in this folder path `.pre-commit-config.yml`
+Create a file in this folder path `.pre-commit-config.yaml`
 
 ```yaml
 ---
