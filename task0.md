@@ -30,17 +30,51 @@ repos:
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
-  - repo: 'https://github.com/adrienverge/yamllint.git'
-    rev: v1.27.1
-    hooks:
-      - id: yamllint
   - repo: 'https://github.com/ansible-community/ansible-lint.git'
-    rev: v6.5.1
+    rev: v6.6.1
     hooks:
       - id: ansible-lint
         pass_filenames: false
         always_run: true
         entry: "ansible-lint"
+        args:
+          - "--profile=production"
+        additional_dependencies:
+          - "ansible-core>=2.13"
+          - "yamllint>=1.26,<2.0"
+...
+```
+
+Create a yaml lint file `.yamllint.yml` to hold our yaml rules.
+
+```yaml
+---
+extends: default
+
+ignore: |
+  changelogs
+rules:
+  # 80 chars should be enough, but don't fail if a line is longer
+  line-length: disable
+  colons:
+    max-spaces-before: 0
+    max-spaces-after: -1
+  document-end:
+    present: true
+  document-start:
+    present: true
+  indentation:
+    level: error
+    # Require indentation https://redhat-cop.github.io/automation-good-practices/#_yaml_and_jinja2_syntax
+    spaces: 2
+    indent-sequences: true
+    check-multi-line-strings: false
+  truthy:
+    level: error
+    # Allow only YAML 1.2 booleans https://redhat-cop.github.io/automation-good-practices/#_yaml_and_jinja2_syntax
+    allowed-values:
+      - 'true'
+      - 'false'
 ...
 ```
 
