@@ -3,15 +3,15 @@ all:
   children:
     automationcontroller:
       hosts:
-        controller.node
+        controller.node:
 
     automationhub:
       hosts:
-        hub.node
+        hub.node:
 
     builder:
       hosts:
-        hub.node
+        hub.node:
   vars:
 #    ansible_user: admin
 #    ansible_password: secret123

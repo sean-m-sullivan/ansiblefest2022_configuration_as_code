@@ -32,13 +32,14 @@ Make sure to keep the ssh_priv_file credential type.
 controller_credential_types:
   - name: ssh_priv_file
     kind: cloud
-    description: creates temp ssh priv key to use
+    description: creates temp ssh priv key to use (cannot have passphrase)
     inputs:
       fields:
         - id: priv_key
           type: string
           label: Certificate
           format: ssh_private_key
+          multiline: true
           secret: true
     injectors:
       env:
@@ -72,6 +73,16 @@ controller_credentials:
       password: "{{ controller_password }}"
       verify_ssl: false
 
+  - name: ah_token_user
+    credential_type: automation_hub
+    organization: config_as_code
+    description: automation hub api account
+    inputs:
+      hostname: "{{ ah_host }}"
+      username: "{{ ah_token_username }}"
+      token: "{{ ah_token }}"
+      verify_ssl: false
+
   - name: ah_certified
     credential_type: Ansible Galaxy/Automation Hub API Token
     organization: config_as_code
@@ -97,18 +108,19 @@ controller_credentials:
     credential_type: Container Registry
     organization: config_as_code
     inputs:
-      host: "https://{{ ah_host }}/"
+      host: "{{ ah_host }}"
       username: "{{ ah_username }}"
       password: "{{ ah_password }}"
       verify_ssl: false
 
+# might need to change for the student account
   - name: root
     credential_type: Machine
     organization: config_as_code
     description: root local password
     inputs:
       username: root
-      password: "{{ root_machine_cred }}"
+      password: "{{ root_machine_pass }}"
 
   - name: vault
     credential_type: Vault
@@ -120,6 +132,7 @@ controller_credentials:
 ```
 
 ![credential](assets/images/cred_ah_admin.png)
+![add github screenshot]()
 
 Further documentation for those who are interested to learn more see:
 
@@ -132,17 +145,7 @@ Create a file `group_vars/all/inventories.yml` and add the required information 
 ```yaml
 ---
 controller_inventories:
-  - name: controller_config
-    description: inventory for configuring controller
-    organization: config_as_code
 
-  - name: custom_collections
-    description: inventory for building custom collections
-    organization: config_as_code
-
-  - name: execution_environments
-    description: inventory for building execution environments
-    organization: config_as_code
 ...
 ```
 
@@ -155,46 +158,12 @@ Further documentation for those who are interested to learn more see:
 ## Step 5
 
 Create a file `group_vars/all/inventory_sources.yml` and add the required information to the list `controller_inventory_sources` to configure the UI to look like the screenshot
-**WE never decleared an inventory files here yet, and never declared the env variable**
+**WE never declared an inventory files here yet, and never declared the env variable**
 
 ```yaml
 ---
 controller_inventory_sources:
-  - name: controller_config_source
-    organization: config_as_code
-    source: scm
-    source_project: config_as_code
-    source_path: "inventory_{{ env }}.yml"
-    inventory: controller_config
-    credential: ""
-    overwrite: true
-    update_on_launch: true
-    update_cache_timeout: 0
-    wait: true
 
-  - name: custom_collections_inv
-    organization: config_as_code
-    source: scm
-    source_project: config_as_code
-    source_path: "inventory_{{ env }}.yml"
-    inventory: custom_collections
-    credential: ""
-    overwrite: true
-    update_on_launch: true
-    update_cache_timeout: 0
-    wait: true
-
-  - name: execution_environments_inv
-    organization: config_as_code
-    source: scm
-    source_project: config_as_code
-    source_path: "inventory_{{ env }}.yml"
-    inventory: execution_environments
-    credential: ""
-    overwrite: true
-    update_on_launch: true
-    update_cache_timeout: 0
-    wait: true
 ...
 ```
 
@@ -231,22 +200,10 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 7
 
-Create a vault file `vault.yml` and fill in the correct passwords for each variable
-
-```yaml
----
-vault_pass: ''
-ah_pass: ''
-controller_pass: ''
-root_machine_cred: ''
-...
-```
-
-## Step 8
-
 Create a playbook `controller_config.yml`
 
 {% raw %}
+
 ```yaml
 ---
 - name: Playbook to configure ansible controller post installation
@@ -258,14 +215,14 @@ Create a playbook `controller_config.yml`
     - name: include setting role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.settings
-      when: controller_settings is defined
+      when: controller_settings | length is not match('0')
 
     - name: create organizations without credentials
       ansible.builtin.set_fact:
         orgs_no_creds: "{{ orgs_no_creds | default([]) + [{ 'name' : item.name }] }}"
       loop: "{{ controller_organizations }}"
       when:
-        - controller_organizations is defined
+        - controller_organizations | length is not match('0')
         - (item.state | default('Present')) != 'absent'
 
     - name: print out custom fact
@@ -278,24 +235,24 @@ Create a playbook `controller_config.yml`
         name: redhat_cop.controller_configuration.organizations
       vars:
         controller_organizations: "{{ orgs_no_creds }}"
-      when: orgs_no_creds is defined
+      when: orgs_no_creds | length is not match('0')
 
     - name: include labels role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.labels
-      when: controller_labels is defined
+      when: controller_labels | length is not match('0')
 
     - name: include users role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.users
       vars:
         controller_configuration_users_secure_logging: true
-      when: controller_user_accounts is defined
+      when: controller_user_accounts | length is not match('0')
 
     - name: include teams role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.teams
-      when: controller_teams is defined
+      when: controller_teams | length is not match('0')
 
    # probably not optimal but works, looking for better solutions
     - name: Figuring out AH token
@@ -303,8 +260,8 @@ Create a playbook `controller_config.yml`
         - name: Authenticate and get an API token from Automation Hub
           redhat_cop.ah_configuration.ah_token:
             ah_host: "{{ ah_host | default(groups['automationhub'][0]) }}"
-            ah_username: "{{ ah_username | default('admin') }}"
-            ah_password: "{{ ah_password | default('Password1234!') }}"
+            ah_username: "{{ ah_token_username | default('admin') }}"
+            ah_password: "{{ ah_token_password }}"
             ah_path_prefix: 'galaxy' # this is for private automation hub
             ah_verify_ssl: false
           register: r_ah_token
@@ -313,89 +270,49 @@ Create a playbook `controller_config.yml`
           ansible.builtin.set_fact:
             ah_token: "{{ ah_token['token'] }}"
           when: r_ah_token['changed']
-       # what needs to be done to guarantee this to work?
-#      rescue:
       when: ah_token is not defined or ah_token['token'] is defined
 
-    - name: update credentials
-      block:
-        - name: include credential_types role
-          ansible.builtin.include_role:
-            name: redhat_cop.controller_configuration.credential_types
-          when: controller_credential_types is defined
-
-      rescue:
-        - name: pulling credential_types list
-          ansible.builtin.set_fact:
-            cf_current_credential_types: "{{ cf_current_credential_types | default([]) + [{ 'name' : item.name, 'state' : 'absent'}] }}"
-          loop: "{{ _current_cred_types }}"
-          vars:
-            _current_cred_types: "{{ lookup('awx.awx.tower_api', 'credential_types', query_params={ 'namespace__isnull': true } ,host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
-#            _current_cred_types: "{{ lookup('ansible.controller.controller_api', 'credential_types', query_params={ 'namespace__isnull': true } ,host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
-
-        - name: pulling credentials list
-          ansible.builtin.set_fact:
-            cf_current_credentials: "{{ cf_current_credentials | default([]) + [{ 'name' : item.name, 'credential_type' : item.credential_type, 'state' : 'absent'}] }}"
-          loop: "{{ _current_credentials }}"
-          vars:
-            _current_credentials: "{{ lookup('awx.awx.tower_api', 'credentials', host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
-#            _current_cred_types: "{{ lookup('ansible.controller.controller_api', 'credentials', host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
-
-        - name: include credential_types role
-          ansible.builtin.include_role:
-            name: redhat_cop.controller_configuration.credentials
-            apply:
-              ignore_errors: true # need to ignore errors because you cannot delete default ansible galaxy and container registry creds which will error
-          vars:
-            controller_credentials: "{{ cf_current_credentials }}"
-            controller_configuration_credentials_secure_logging: false
-
-        - name: include credential_types role
-          ansible.builtin.include_role:
-            name: redhat_cop.controller_configuration.credential_types
-          vars:
-            controller_credential_types: "{{ cf_current_credential_types }}"
-
-        - name: include credential_types role
-          ansible.builtin.include_role:
-            name: redhat_cop.controller_configuration.credential_types
+    - name: include credential_types role
+      ansible.builtin.include_role:
+        name: redhat_cop.controller_configuration.credential_types
+      when: controller_credential_types | length is not match('0')
 
     - name: include credential role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.credentials
       vars:
         controller_configuration_credentials_secure_logging: true
-      when: controller_credentials is defined
+      when: controller_credentials | length is not match('0')
 
     - name: include credential_input_sources role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.credential_input_sources
-      when: controller_credential_input_sources is defined
+      when: controller_credential_input_sources | length is not match('0')
 
     - name: include organizations role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.organizations
-      when: controller_organizations is defined
+      when: controller_organizations | length is not match('0')
 
     - name: include execution_environments role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.execution_environments
-      when: controller_execution_environments is defined
+      when: controller_execution_environments | length is not match('0')
 
     - name: include projects role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.projects
-      when: controller_projects is defined
+      when: controller_projects | length is not match('0')
 
     - name: include inventories role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.inventories
-      when: controller_inventories is defined
+      when: controller_inventories | length is not match('0')
 
     - name: include inventory_sources role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.inventory_sources
-      when: controller_inventory_sources is defined
+      when: controller_inventory_sources | length is not match('0')
 
     - name: include inventory_source_update role
       ansible.builtin.include_role:
@@ -404,32 +321,33 @@ Create a playbook `controller_config.yml`
     - name: include groups role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.groups
-      when: controller_groups is defined
+      when: controller_groups | length is not match('0')
 
     - name: include applications role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.applications
-      when: controller_applications is defined
+      when: controller_applications | length is not match('0')
 
     - name: include job_templates role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.job_templates
-      when: controller_templates is defined
+      when: controller_templates | length is not match('0')
 
     - name: include workflow_job_templates role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.workflow_job_templates
-      when: controller_workflows is defined
+      when: controller_workflows | length is not match('0')
 
     - name: include schedules role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.schedules
-      when: controller_schedules is defined
+      when: controller_schedules | length is not match('0')
 
     - name: include roles role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.roles
-      when: controller_roles is defined
+      when: controller_roles | length is not match('0')
 ...
 ```
+
 {% endraw %}

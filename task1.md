@@ -7,7 +7,7 @@ In this section we will show you step by step how to build an Execution Environm
 Ensure that you have `ansible-core` and `ansible-builder` installed on your machine.
 
 ```console
-dnf install ansible-core ansible-builder
+sudo dnf install ansible-core ansible-builder
 ```
 
 Further documentation for those who are interested to learn more see:
@@ -37,16 +37,15 @@ Set the variables to be used in the collections for use. These include hosts, us
 Create a file in this folder path `group_vars/all/auth.yml`
 
 ```yaml
-# User may update controller/hub auth creds to this file and encrypt it using `ansible-vault`
 ---
 controller_hostname: "{{ groups['automationcontroller'][0] }}"
 controller_username: "{{ controller_user | default('admin') }}"
-controller_password: "{{ controller_pass | default('Password1234!') }}"
+controller_password: "{{ controller_pass }}"
 controller_validate_certs: false
 
 ah_host: "{{ groups['automationhub'][0] }}"
 ah_username: "{{ ah_user | default('admin') }}"
-ah_password: "{{ ah_pass | default('Password1234!') }}"
+ah_password: "{{ ah_pass }}"
 ah_path_prefix: 'galaxy' # this is for private automation hub
 ah_verify_ssl: false
 ah_validate_certs: false
@@ -54,7 +53,6 @@ ah_validate_certs: false
 ee_registry_username: "{{ ah_username }}"
 ee_registry_password: "{{ ah_password }}"
 ee_registry_dest: "{{ ah_host }}"
-ee_validate_certs: false
 ...
 ```
 
@@ -73,21 +71,15 @@ all:
   children:
     automationcontroller:
       hosts:
-        HOST_HERE
+        HOST_HERE:
 
     automationhub:
       hosts:
-        HOST_HERE
+        HOST_HERE:
 
     builder:
       hosts:
-        SAME_AS_HUB
-  vars:
-    ansible_user: HERE
-    ansible_password: HERE
-    controller_pass: HERE
-    ah_pass: HERE
-    ansible_ssh_common_args: '-o StrictHostKeyChecking=no' # might need this, test without on lab
+        VSCODE_HOST:
 ...
 ```
 
@@ -98,6 +90,34 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 5
 
+Create a vault file `vault.yml` and fill in the correct passwords for each variable
+
+```yaml
+---
+cloud_token: 'this is the one from console.redhat.com'
+root_machine_pass: 'password for root user on hub'
+ah_api_user_pass: 'this will create and use this password can be generated'
+controller_api_user_pass: 'this will create and use this password can be generated'
+controller_pass: 'account pass for controller'
+ah_pass: 'hub admin account pass'
+ah_token_password: "{{ ah_api_user_pass }}"
+vault_pass: 'the password to decrypt this vault'
+...
+```
+
+Create a `.password` file put your generated password in this file. (remember we are not committing this file into git because we have it in our ignore list)
+
+```text
+Generated_Password
+```
+
+Further documentation for those who are interested to learn more see:
+
+- [ansible vaults](https://docs.ansible.com/ansible/latest/user_guide/vault.html)
+- [vault with navigator](https://ansible-navigator.readthedocs.io/en/latest/faq/#how-can-i-use-a-vault-password-with-ansible-navigator)
+
+## Step 6
+
 Create a new playbook called `buildEE.yml` and make the hosts use the group builder (which for this lab we are using automation hub, see note) and turn gather_facts on. Then add include role redhat_cop.ee_utilities.ee_builder
 
 Note: this we would normally suggest being a small cli only server for deploying config as code and running installer/upgrades for AAP
@@ -107,6 +127,7 @@ Note: this we would normally suggest being a small cli only server for deploying
 - name: playbook to configure execution environments
   hosts: builder
   gather_facts: true
+  vars_files: "vault.yml"
   tasks:
     - name: include ee_builder role
       ansible.builtin.include_role:
@@ -119,7 +140,7 @@ Further documentation for those who are interested to learn more see:
 - [include vs import](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_role_module.html)
 - [ee_builder role](https://github.com/redhat-cop/ee_utilities/tree/main/roles/ee_builder)
 
-## Step 6
+## Step 7
 
 Create a file `group_vars/all/ah_ee_list.yml` where we will create a list called `ee_list` that has 4 variables per item which are:
 
@@ -142,6 +163,8 @@ ee_list:
       - name: redhat_cop.controller_configuration
       - name: redhat_cop.ah_configuration
       - name: redhat_cop.ee_utilities
+      - name: redhat_cop.aap_utilities
+      - name: awx.awx
 
 ee_image_push: true
 ee_create_ansible_config: false
@@ -153,7 +176,7 @@ Further documentation for those who are interested to learn more see:
 - [YAML lists and more](https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html)
 - [builder role documentation](https://github.com/redhat-cop/ee_utilities/blob/main/roles/ee_builder/README.md#build-argument-defaults)
 
-## Step 7
+## Step 8
 
 Run the playbook pointing to the recently created inventory file and limit the run to just builder to build your new custom EE and publish it to private automation hub.
 

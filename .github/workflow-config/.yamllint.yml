@@ -3,23 +3,27 @@ extends: default
 
 ignore: |
   changelogs
-
+  .github/workflows/pages.yml
 rules:
   # 80 chars should be enough, but don't fail if a line is longer
   line-length: disable
   colons:
     max-spaces-before: 0
     max-spaces-after: -1
-  document-end: {present: true}
+  document-end:
+    present: true
+  document-start:
+    present: true
   indentation:
     level: error
-    indent-sequences: consistent
+    spaces: 2
+    # Require indentation https://redhat-cop.github.io/automation-good-practices/#_yaml_and_jinja2_syntax
+    indent-sequences: true
+    check-multi-line-strings: false
   truthy:
     level: error
+    # Allow only YAML 1.2 booleans https://redhat-cop.github.io/automation-good-practices/#_yaml_and_jinja2_syntax
     allowed-values:
-    - 'True'
-    - 'False'
-    - 'true'
-    - 'false'
-    - 'on'
+      - 'true'
+      - 'false'
 ...

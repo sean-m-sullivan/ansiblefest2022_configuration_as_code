@@ -7,7 +7,7 @@ In this section you will configure your private automation hub using the code pr
 Ensure that you have `ansible-navigator` installed on your machine.
 
 ```console
-dnf install ansible-navigator
+sudo dnf install ansible-navigator
 ```
 
 Further documentation for those who are interested to learn more see:
@@ -22,14 +22,17 @@ Create a file `group_vars/all/ah_repositories.yml` you will need to add `redhat_
 ---
 # ah_repository_certified:
 #   token: "{{ cloud_token }}"
-#   url: 'https://console.redhat.com/api/automation-hub/content/5910538-synclist/'
+#   url: 'https://console.redhat.com/api/automation-hub/'
 #   auth_url: 'https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token'
+#   wait: true
 
 ah_repository_community:
   requirements:
     - redhat_cop.aap_utilities
     - redhat_cop.ee_utilities
     - containers.podman
+    - awx.awx
+  wait: true
 ...
 ```
 
@@ -41,12 +44,13 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 3
 
-Create a file `group_vars/all/ah_users.yml` make sure this user has `is_superuser` set to `true` and their `password` is set to `Password1234!`.
+Create a file `group_vars/all/ah_users.yml` make sure this user has `is_superuser` set to `true` and their `password` is set to `"{{ ah_token_password }}"`.
 
 ```yaml
 ---
+ah_token_username: token_user
 ah_users:
-  - username: api
+  - username: token_user
     groups:
       - "admin"
     append: true
@@ -113,19 +117,21 @@ Create a playbook `hub_config.yml` and `include` the `repository` role as the fi
 
 ```yaml
 ---
-- name: configure private automation hub
-  hosts: "{{ groups['automationhub'][0] }}"
+- name: configure private automation hub after installation
+  hosts: all
   gather_facts: false
   connection: local
+  vars_files:
+    - "vault.yml"
   tasks:
-    - name: include repository_sync role
+    - name: include repository sync role
       ansible.builtin.include_role:
         name: redhat_cop.ah_configuration.repository_sync
 
     - name: include group role
       ansible.builtin.include_role:
         name: redhat_cop.ah_configuration.group
-      when: ah_groups is defined
+      when: ah_groups | length is not match('0')
 ...
 ```
 
@@ -133,11 +139,9 @@ Create a playbook `hub_config.yml` and `include` the `repository` role as the fi
 
 The next step is to run the playbook, for demonstration purposes we are going to show how to get the Execution Environment(EE) that was built in the previous step and run the playbook.
 
-If you wish to skip this step run the playbook this way.
+If you wish to skip this step run the playbook this way[^1].
 
-```console
-ansible-playbook -i inventory.yml -l automationhub hub_config.yml
-```
+[^1]: `ansible-galaxy install redhat_cop.ah_configuration` then `ansible-playbook -i inventory.yml -l automationhub hub_config.yml`
 
 Login to the automation hub using the podman login command. This will ask for a user:pass. After authenticating pull the config_as_code image.
 
@@ -148,6 +152,7 @@ podman pull --tls-verify=false hub.node/config_as_code:latest
 
 Ansible navigator takes the following commands.
 The options used are
+
 |CLI Option|Use|
 |:---:|:---:|
 |`eei`|execution environment to use.|
@@ -155,8 +160,8 @@ The options used are
 |`pa`|pull arguments to use, in this case ignore tls.|
 |`m`|which mode to use, defaults to interactive.|
 
-Use these options to run the playbook in the execution environemnt.
+Use these options to run the playbook in the execution environment.
 
 ```console
-ansible-navigator run hub_config.yml --eei hub.node/config_as_code -i inventory --pa='--tls-verify=false' -m stdout
+ansible-navigator run hub_config.yml --eei hub.node/config_as_code -i inventory.yml -l automationhub --pa='--tls-verify=false' -m stdout
 ```
