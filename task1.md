@@ -189,4 +189,4 @@ Further documentation for those who are interested to learn more see:
 - [more on ansible-playbook](https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html#ansible-playbook)
 - link2
 
-[previous task](task0.md)<div align="right">[next task](task2.md)</div>
+[previous task](task0.md) [next task](task2.md)

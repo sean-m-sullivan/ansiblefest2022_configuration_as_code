@@ -166,4 +166,4 @@ Use these options to run the playbook in the execution environment.
 ansible-navigator run hub_config.yml --eei hub.node/config_as_code -i inventory.yml -l automationhub --pa='--tls-verify=false' -m stdout
 ```
 
-[previous task](task1.md)<div align="right">[next task](task3.md)</div>
+[previous task](task1.md) [next task](task3.md)
