@@ -5,7 +5,7 @@ controller_templates:
     job_type: run
     playbook: playbooks/controller_config.yml
     inventory: config_as_code
-    execution_environment: minimal
+    execution_environment: supported
     concurrent_jobs_enabled: false
     verbosity: 0
     credentials:
@@ -18,7 +18,7 @@ controller_templates:
     job_type: run
     playbook: playbooks/hub_config.yml
     inventory: config_as_code
-    execution_environment: minimal
+    execution_environment: supported
     concurrent_jobs_enabled: false
     verbosity: 0
     credentials:
@@ -29,26 +29,24 @@ controller_templates:
     job_type: run
     playbook: playbooks/build_ee.yml
     inventory: config_as_code
-    execution_environment: minimal
+    execution_environment: supported
     concurrent_jobs_enabled: false
     verbosity: 0
     credentials:
       - root
       - ah_admin_user_pass
-    labels:
-      - EE
 
-  - name: build_custom_collections
-    project: config_as_code
-    job_type: run
-    playbook: playbooks/custom_collection.yml
-    inventory: config_as_code
-    execution_environment: minimal
-    concurrent_jobs_enabled: false
-    verbosity: 0
-    credentials:
-      - root
-      - ah_token_user
-    extra_vars:
-      custom_cop: true
+  # - name: build_custom_collections
+  #   project: config_as_code
+  #   job_type: run
+  #   playbook: playbooks/custom_collection.yml
+  #   inventory: config_as_code
+  #   execution_environment: supported
+  #   concurrent_jobs_enabled: false
+  #   verbosity: 0
+  #   credentials:
+  #     - root
+  #     - ah_token_user
+  #   extra_vars:
+  #     custom_cop: true
 ...

@@ -3,6 +3,7 @@
 In this section we will show you step by step how to add pre commit linting to a repository. You will be able to use this on the command line to lint your code and use it in a github repository. The lab already has git repo created and cloned onto your vscode instance.
 
 ## Pre Steps
+
 If you are using the Workshop, a Workshop project should be available in your VSCode for you to push to the Workshop Gitea server. Create the files in this project folder.
 
 ## Step 1
@@ -64,6 +65,7 @@ extends: default
 
 ignore: |
   changelogs
+  vault.yml
 rules:
   # 80 chars should be enough, but don't fail if a line is longer
   line-length: disable
