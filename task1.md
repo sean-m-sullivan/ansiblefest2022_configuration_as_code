@@ -97,10 +97,13 @@ Further documentation for those who are interested to learn more see:
 
 Create a vault file `vault.yml` and fill in the correct passwords for each variable
 
+{% raw %}
+
 ```yaml
 ---
 cloud_token: 'this is the one from console.redhat.com'
-root_machine_pass: 'password for root user on hub'
+student_num: "your student username here"
+machine_pass: 'password for root user on hub'
 ah_api_user_pass: 'this will create and use this password can be generated'
 controller_api_user_pass: 'this will create and use this password can be generated'
 controller_pass: 'account pass for controller'
@@ -111,10 +114,25 @@ vault_pass: 'the password to decrypt this vault'
 
 ```
 
+{% endraw %}
+
 Create a `.password` file put your generated password in this file. (remember we are not committing this file into git because we have it in our ignore list)
 
 ```text
 Generated_Password
+```
+
+Create an `ansible.cfg` file to point to the .password file.
+
+```ini
+[defaults]
+vault_password_file=.password
+```
+
+Encrypt vault with the password in the .password file
+
+```console
+ansible-vault encrypt vault.yml
 ```
 
 Further documentation for those who are interested to learn more see:
@@ -124,18 +142,19 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 6
 
-Create a new playbook called `buildEE.yml` and make the hosts use the group builder (which for this lab we are using automation hub, see note) and turn gather_facts on. Then add include role redhat_cop.ee_utilities.ee_builder
+Create a new playbook called `playbooks/build_ee.yml` and make the hosts use the group builder (which for this lab we are using automation hub, see note) and turn gather_facts on. Then add include role redhat_cop.ee_utilities.ee_builder
 
 Note: this we would normally suggest being a small cli only server for deploying config as code and running installer/upgrades for AAP
 
 ```yaml
 ---
-- name: playbook to configure execution environments
+- name: Playbook to configure execution environments
   hosts: builder
   gather_facts: true
-  vars_files: "vault.yml"
+  vars_files:
+    - "../vault.yml"
   tasks:
-    - name: include ee_builder role
+    - name: Include ee_builder role
       ansible.builtin.include_role:
         name: redhat_cop.ee_utilities.ee_builder
 ...
@@ -156,20 +175,16 @@ Create a file `group_vars/all/ah_ee_list.yml` where we will create a list called
 - `python` these are any python modules that need to be added through pip (excluding ansible)
 - `collections` any collections that you would like to be built into your EE image
 
-which the role will loop over and for each item in this list it will create and publish an EE using the provided variables. For this lab we will just pass it 3 of the 4 redhat_cop configuration as code collections which are:
-
-- redhat_cop.controller_configuration
-- redhat_cop.ah_configuration
-- redhat_cop.ee_utilities
-
+which the role will loop over and for each item in this list it will create and publish an EE using the provided variables.
 
 ```yaml
 ---
 ee_list:
-  - ee_name: config_as_code_student#  # use your student # here.
+  - ee_name: "config_as_code_{{ student_num }}"
     collections:
       - name: redhat_cop.controller_configuration
       - name: redhat_cop.ah_configuration
+        version: 0.9.2-beta
       - name: redhat_cop.ee_utilities
       - name: redhat_cop.aap_utilities
       - name: awx.awx
@@ -189,7 +204,7 @@ Further documentation for those who are interested to learn more see:
 Run the playbook pointing to the recently created inventory file and limit the run to just builder to build your new custom EE and publish it to private automation hub.
 
 ```console
-ansible-playbook -i inventory.yml -l builder buildEE.yml
+ansible-playbook -i inventory.yml -l builder playbooks/build_ee.yml
 ```
 
 Further documentation for those who are interested to learn more see:

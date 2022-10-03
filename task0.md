@@ -64,6 +64,7 @@ extends: default
 
 ignore: |
   changelogs
+  vault.yml
 rules:
   # 80 chars should be enough, but don't fail if a line is longer
   line-length: disable
