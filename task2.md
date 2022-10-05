@@ -84,7 +84,6 @@ If you need more information expand out this section that was copied from the gr
 |`name`|""|yes|str|Group Name. Must be lower case containing only alphanumeric characters and underscores.|
 |`perms`|""|yes|str|The list of permissions to add to or remove from the given group. See below for options.|
 |`state`|`present`|no|str|Desired state of the group.|
-<!-- |`new_name`|""|yes|str|Setting this option will change the existing name (looked up via the name field.| -->
 
 #### perms
 
