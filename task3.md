@@ -417,6 +417,7 @@ Create a playbook `playbooks/controller_config.yml` and copy all this into the f
         name: redhat_cop.controller_configuration.roles
       when: controller_roles is defined
 ...
+
 ```
 
 {% endraw %}
