@@ -47,7 +47,7 @@
         name: redhat_cop.controller_configuration.teams
       when: controller_teams | length is not match('0')
 
-   # probably not optimal but works, looking for better solutions
+    # probably not optimal but works, looking for better solutions
     - name: Figuring out AH token
       block:
         - name: Authenticate and get an API token from Automation Hub
@@ -55,7 +55,7 @@
             ah_host: "{{ ah_host | default(groups['automationhub'][0]) }}"
             ah_username: "{{ ah_token_username | default('admin') }}"
             ah_password: "{{ ah_token_password }}"
-            ah_path_prefix: 'galaxy' # this is for private automation hub
+            ah_path_prefix: 'galaxy'  # this is for private automation hub
             ah_verify_ssl: false
           register: r_ah_token
 

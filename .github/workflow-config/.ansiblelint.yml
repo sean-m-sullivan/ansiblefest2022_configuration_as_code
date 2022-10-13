@@ -14,6 +14,6 @@ use_default_rules: true
 # with verbosity set to 1, its dumping 'unknown file type messages'
 # verbosity: 1
 skip_list:
-# YAML: Ansible lint doing yaml checks that we were already doing but without config.
+  # YAML: Ansible lint doing yaml checks that we were already doing but without config.
   - yaml
 ...
