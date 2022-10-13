@@ -220,10 +220,6 @@ Create a playbook `controller_config.yml`
     - "vault.yml"
   connection: local
   tasks:
-    - name: include setting role
-      ansible.builtin.include_role:
-        name: redhat_cop.controller_configuration.settings
-      when: controller_settings | length is not match('0')
 
     - name: create organizations without credentials
       ansible.builtin.set_fact:
@@ -359,5 +355,11 @@ Create a playbook `controller_config.yml`
 ```
 
 {% endraw %}
+
+Use these options to run the playbook in the execution environment.
+
+```console
+ansible-navigator run hub_config.yml --eei hub.rhc3ab.example.opentlc.com/controller_config.yml -i inventory.yml -l automationhub --pa='--tls-verify=false' -m stdout
+```
 
 [previous task](task2.md) [next task](task4.md)
