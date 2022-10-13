@@ -215,7 +215,8 @@ Create a playbook `controller_config.yml`
 ```yaml
 ---
 - name: Playbook to configure ansible controller post installation
-  hosts: all
+  hosts: automationcontroller
+  gather_facts: false
   vars_files:
     - "vault.yml"
   connection: local
@@ -226,7 +227,7 @@ Create a playbook `controller_config.yml`
         orgs_no_creds: "{{ orgs_no_creds | default([]) + [{ 'name' : item.name }] }}"
       loop: "{{ controller_organizations }}"
       when:
-        - controller_organizations | length is not match('0')
+        - controller_organizations is defined
         - (item.state | default('Present')) != 'absent'
 
     - name: print out custom fact
@@ -239,24 +240,7 @@ Create a playbook `controller_config.yml`
         name: redhat_cop.controller_configuration.organizations
       vars:
         controller_organizations: "{{ orgs_no_creds }}"
-      when: orgs_no_creds | length is not match('0')
-
-    - name: include labels role
-      ansible.builtin.include_role:
-        name: redhat_cop.controller_configuration.labels
-      when: controller_labels | length is not match('0')
-
-    - name: include users role
-      ansible.builtin.include_role:
-        name: redhat_cop.controller_configuration.users
-      vars:
-        controller_configuration_users_secure_logging: true
-      when: controller_user_accounts | length is not match('0')
-
-    - name: include teams role
-      ansible.builtin.include_role:
-        name: redhat_cop.controller_configuration.teams
-      when: controller_teams | length is not match('0')
+      when: orgs_no_creds is defined
 
    # probably not optimal but works, looking for better solutions
     - name: Figuring out AH token
@@ -279,44 +263,44 @@ Create a playbook `controller_config.yml`
     - name: include credential_types role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.credential_types
-      when: controller_credential_types | length is not match('0')
+      when: controller_credential_types is defined
 
     - name: include credential role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.credentials
       vars:
         controller_configuration_credentials_secure_logging: true
-      when: controller_credentials | length is not match('0')
+      when: controller_credentials is defined
 
     - name: include credential_input_sources role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.credential_input_sources
-      when: controller_credential_input_sources | length is not match('0')
+      when: controller_credential_input_sources is defined
 
     - name: include organizations role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.organizations
-      when: controller_organizations | length is not match('0')
+      when: controller_organizations is defined
 
     - name: include execution_environments role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.execution_environments
-      when: controller_execution_environments | length is not match('0')
+      when: controller_execution_environments is defined
 
     - name: include projects role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.projects
-      when: controller_projects | length is not match('0')
+      when: controller_projects is defined
 
     - name: include inventories role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.inventories
-      when: controller_inventories | length is not match('0')
+      when: controller_inventories is defined
 
     - name: include inventory_sources role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.inventory_sources
-      when: controller_inventory_sources | length is not match('0')
+      when: controller_inventory_sources is defined
 
     - name: include inventory_source_update role
       ansible.builtin.include_role:
@@ -325,32 +309,32 @@ Create a playbook `controller_config.yml`
     - name: include groups role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.groups
-      when: controller_groups | length is not match('0')
+      when: controller_groups is defined
 
     - name: include applications role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.applications
-      when: controller_applications | length is not match('0')
+      when: controller_applications is defined
 
     - name: include job_templates role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.job_templates
-      when: controller_templates | length is not match('0')
+      when: controller_templates is defined
 
     - name: include workflow_job_templates role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.workflow_job_templates
-      when: controller_workflows | length is not match('0')
+      when: controller_workflows is defined
 
     - name: include schedules role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.schedules
-      when: controller_schedules | length is not match('0')
+      when: controller_schedules is defined
 
     - name: include roles role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.roles
-      when: controller_roles | length is not match('0')
+      when: controller_roles is defined
 ...
 ```
 
@@ -359,7 +343,7 @@ Create a playbook `controller_config.yml`
 Use these options to run the playbook in the execution environment.
 
 ```console
-ansible-navigator run hub_config.yml --eei hub.rhc3ab.example.opentlc.com/controller_config.yml -i inventory.yml -l automationhub --pa='--tls-verify=false' -m stdout
+ansible-navigator run controller_config.yml --eei hub-student1.rhd817.example.opentlc.com/config_as_code -i inventory.yml -l automationcontroller --pa='--tls-verify=false' -m stdout
 ```
 
 [previous task](task2.md) [next task](task4.md)
