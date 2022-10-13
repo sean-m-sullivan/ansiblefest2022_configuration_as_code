@@ -164,8 +164,8 @@ Use the username: **'admin'** and the password for your account in the workshop.
 **Replace rh####** with the correct shortname for the workshop.
 
 ```console
-podman login --tls-verify=false hub-student1.rh####.example.opentlc.com
-podman pull --tls-verify=false hub-student1.rh####.example.opentlc.com/config_as_code:latest
+podman login --tls-verify=false hub-student#.rh####.example.opentlc.com
+podman pull --tls-verify=false hub-student#.rh####.example.opentlc.com/config_as_code:latest
 ```
 
 Ansible navigator takes the following commands.
