@@ -417,6 +417,7 @@ Create a playbook `playbooks/controller_config.yml` and copy all this into the f
         name: redhat_cop.controller_configuration.roles
       when: controller_roles is defined
 ...
+
 ```
 
 {% endraw %}
@@ -454,7 +455,7 @@ Run controller_config playbook.
 **Replace rh####** with the correct shortname for the workshop.
 
 ```console
-ansible-navigator run controller_config.yml --eei hub-student#.rh####.example.opentlc.com/config_as_code_student# -i inventory.yml -l automationcontroller --pa='--tls-verify=false' -m stdout
+ansible-navigator run controller_config.yml --eei hub-student#.rh####.example.opentlc.com/config_as_code -i inventory.yml -l automationcontroller --pa='--tls-verify=false' -m stdout
 ```
 
 [previous task](task2.md) [next task](task4.md)
