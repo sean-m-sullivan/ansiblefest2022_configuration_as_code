@@ -184,7 +184,7 @@ ee_list:
     collections:
       - name: redhat_cop.controller_configuration
       - name: redhat_cop.ah_configuration
-        version: 0.9.2-beta
+        version: 0.9.2
       - name: redhat_cop.ee_utilities
       - name: redhat_cop.aap_utilities
       - name: awx.awx
