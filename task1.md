@@ -180,7 +180,7 @@ which the role will loop over and for each item in this list it will create and 
 ```yaml
 ---
 ee_list:
-  - ee_name: "config_as_code_{{ student_num }}"
+  - ee_name: "config_as_code"
     collections:
       - name: redhat_cop.controller_configuration
       - name: redhat_cop.ah_configuration
