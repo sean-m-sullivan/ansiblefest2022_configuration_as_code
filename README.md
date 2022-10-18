@@ -18,4 +18,3 @@ This Presentation/lab will provide code to demonstrate how to use CasC to mainta
 |[Task 1](task1.md)|Building Execution Environments from code.|
 |[Task 2](task2.md)|Configuring Automation hub using code.|
 |[Task 3](task3.md)|Configuring Automation controller using code.|
-|[Task 4](task4.md)|Configuring a Workflow in Automation controller using code.|
