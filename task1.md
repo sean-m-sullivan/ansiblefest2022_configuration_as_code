@@ -189,6 +189,7 @@ ee_list:
       - name: redhat_cop.aap_utilities
       - name: awx.awx
 
+
 ee_image_push: true
 ee_create_ansible_config: false
 ...
