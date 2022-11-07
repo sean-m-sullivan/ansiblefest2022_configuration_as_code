@@ -2,6 +2,8 @@
 - name: playbook to configure execution environments
   hosts: builder
   gather_facts: false
+  vars_files:
+    - "../vault.yml"
   tasks:
     - name: include ee_builder role
       ansible.builtin.include_role:

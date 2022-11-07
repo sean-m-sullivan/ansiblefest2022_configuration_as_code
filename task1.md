@@ -180,14 +180,15 @@ which the role will loop over and for each item in this list it will create and 
 ```yaml
 ---
 ee_list:
-  - ee_name: "config_as_code_{{ student_num }}"
+  - ee_name: "config_as_code"
     collections:
       - name: redhat_cop.controller_configuration
       - name: redhat_cop.ah_configuration
-        version: 0.9.2-beta
+        version: 0.9.2
       - name: redhat_cop.ee_utilities
       - name: redhat_cop.aap_utilities
       - name: awx.awx
+
 
 ee_image_push: true
 ee_create_ansible_config: false

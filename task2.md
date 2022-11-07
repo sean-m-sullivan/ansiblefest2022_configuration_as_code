@@ -84,26 +84,28 @@ Create a playbook `playbooks/hub_config.yml` and `include` the `repository` role
 
 ```yaml
 ---
-- name: Configure private automation hub after installation
+- name: configure private automation hub after installation
   hosts: all
   gather_facts: false
   connection: local
   vars_files:
-    - "../vault.yml"
+    - "vault.yml"
   tasks:
-    - name: Include repository role
-
-    # DO NOT UNCOMMENT!, this is just to show you how you would sync the repos
-    # - name: Include repository sync role
-    #   ansible.builtin.include_role:
-    #     name: redhat_cop.ah_configuration.repository_sync
-
-    - name: Include group role
+    - name: include repository role
       ansible.builtin.include_role:
-        name: redhat_cop.ah_configuration.group
-      when: ah_groups | length is not match('0')
+        name: redhat_cop.ah_configuration.###
 
-     - name: Include user role
+    - name: include repository sync role
+      ansible.builtin.include_role:
+        name: redhat_cop.ah_configuration.###
+
+    - name: include group role
+      ansible.builtin.include_role:
+        name: redhat_cop.ah_configuration.###
+
+    - name: include user role
+      ansible.builtin.include_role:
+        name: redhat_cop.ah_configuration.###
 ...
 ```
 
@@ -113,17 +115,17 @@ The next step is to run the playbook, for demonstration purposes we are going to
 
 If you wish to skip this step run the playbook this way[^1].
 
-[^1]: `ansible-galaxy collection install redhat_cop.ah_configuration:0.9.2-beta` then `ansible-playbook -i inventory.yml -l automationhub hub_config.yml`
+[^1]: `ansible-galaxy collection install redhat_cop.ah_configuration:0.9.2` then `ansible-playbook -i inventory.yml -l automationhub hub_config.yml`
 
-Login to the automation hub using the podman login command. This will ask for a user:pass. After authenticating pull the config_as_code_student# image. **(make sure to change # to your student number)**
+Login to the automation hub using the podman login command. This will ask for a user:pass. After authenticating pull the config_as_code_student# image. **(make sure to change # to your student number and the lab#)**
 
 Use the username: **'admin'** and the password for your account in the workshop.
 
-**Replace rhc3ab** with the correct shortname for the workshop.
+**Replace rh####** with the correct shortname for the workshop.
 
 ```console
-podman login --tls-verify=false hub.rhc3ab.example.opentlc.com
-podman pull --tls-verify=false hub.rhc3ab.example.opentlc.com/config_as_code_student#:latest
+podman login --tls-verify=false hub-student#.rh####.example.opentlc.com
+podman pull --tls-verify=false hub-student#.rh####.example.opentlc.com/config_as_code_#:latest
 ```
 
 Ansible navigator takes the following commands.
@@ -139,7 +141,7 @@ The options used are
 Use these options to run the playbook in the execution environment.
 
 ```console
-ansible-navigator run hub_config.yml --eei hub.rhc3ab.example.opentlc.com/config_as_code_student# -i inventory.yml -l automationhub --pa='--tls-verify=false' -m stdout
+ansible-navigator run hub_config.yml --eei hub-student#.rh####.example.opentlc.com/config_as_code -i inventory.yml -l automationhub --pa='--tls-verify=false' -m stdout
 ```
 
 [previous task](task1.md) [next task](task3.md)
