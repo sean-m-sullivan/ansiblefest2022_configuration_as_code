@@ -278,7 +278,7 @@ Create a playbook `playbooks/controller_config.yml` and copy all this into the f
 - name: Playbook to configure ansible controller post installation
   hosts: all
   vars_files:
-    - "../vaults.yml"
+    - "../vault.yml"
   connection: local
   tasks:
     - name: Include setting role
@@ -319,7 +319,7 @@ Create a playbook `playbooks/controller_config.yml` and copy all this into the f
             ah_username: "{{ ah_token_username | default('admin') }}"
             ah_password: "{{ ah_token_password }}"
             ah_path_prefix: 'galaxy' # this is for private automation hub
-            validate_certs: false
+            ah_verify_ssl: false
           register: r_ah_token
 
         - name: Fixing format
@@ -328,46 +328,10 @@ Create a playbook `playbooks/controller_config.yml` and copy all this into the f
           when: r_ah_token['changed']
       when: ah_token is not defined or ah_token['token'] is defined
 
-    - name: update credentials
-      block:
-        - name: Include credential_types role
-          ansible.builtin.include_role:
-            name: redhat_cop.controller_configuration.credential_types
-          when: controller_credential_types is defined
-
-      rescue:
-        - name: pulling credential_types list
-          ansible.builtin.set_fact:
-            cf_current_credential_types: "{{ cf_current_credential_types | default([]) + [{ 'name' : item.name, 'state' : 'absent'}] }}"
-          loop: "{{ _current_cred_types }}"
-          vars:
-            _current_cred_types: "{{ lookup('awx.awx.tower_api', 'credential_types', query_params={ 'managed': false } ,host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
-#            _current_cred_types: "{{ lookup('ansible.controller.controller_api', 'credential_types', query_params={ 'namespace__isnull': true } ,host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
-
-        - name: pulling credentials list
-          ansible.builtin.set_fact:
-            cf_current_credentials: "{{ cf_current_credentials | default([]) + [{ 'name' : item.name, 'credential_type' : item.credential_type, 'state' : 'absent'}] }}"
-          loop: "{{ _current_credentials }}"
-          vars:
-            _current_credentials: "{{ lookup('awx.awx.tower_api', 'credentials', query_params={ 'managed': false }, host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
-#            _current_cred_types: "{{ lookup('ansible.controller.controller_api', 'credentials', host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
-
-        - name: Include credentials role
-          ansible.builtin.include_role:
-            name: redhat_cop.controller_configuration.credentials
-          vars:
-            controller_credentials: "{{ cf_current_credentials }}"
-            controller_configuration_credentials_secure_logging: false
-
-        - name: Include credential_types role
-          ansible.builtin.include_role:
-            name: redhat_cop.controller_configuration.credential_types
-          vars:
-            controller_credential_types: "{{ cf_current_credential_types }}"
-
-        - name: Include credential_types role
-          ansible.builtin.include_role:
-            name: redhat_cop.controller_configuration.credential_types
+    - name: Include credential_types role
+      ansible.builtin.include_role:
+        name: redhat_cop.controller_configuration.credential_types
+      when: controller_credential_types is defined
 
     - name: Include credential role
       ansible.builtin.include_role:
