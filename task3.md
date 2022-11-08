@@ -38,7 +38,6 @@ Further documentation for those who are interested to learn more see:
 
 - [execution environments role](https://github.com/redhat-cop/controller_configuration/blob/devel/roles/execution_environments/README.md)
 
-
 ## Step 3
 
 Create a file `group_vars/all/credential_types.yml` and add the required information to the list `controller_credential_types` to create also credential type called `automation_hub` with the values from the screenshot.
