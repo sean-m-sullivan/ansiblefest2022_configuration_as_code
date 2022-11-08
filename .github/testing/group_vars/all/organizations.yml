@@ -5,4 +5,5 @@ controller_organizations:
       - ah_published
       - ah_certified
       - ah_community
+    default_environment: supported
 ...
