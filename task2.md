@@ -1,6 +1,6 @@
 # Intro
 
-In this section you will configure your private automation hub using the code provided that is **missing some critical values/information** that you will have to fill in yourself, based on the requirements and looking at readme's for the roles.
+In this section you will configure your private automation hub using the code provided that is ***missing some critical values/information*** that you will have to fill in yourself, based on the requirements and looking at readme's for the roles.
 
 ## Step 1
 
@@ -52,7 +52,7 @@ Create a file `group_vars/all/ah_users.yml` make sure this user has `is_superuse
 
 ```yaml
 ---
-ah_token_username: "{{ student_num }}"
+ah_token_username: "ah_token_user"
 ah_users:
   - username: "{{ ah_token_username }}"
     groups:
@@ -72,49 +72,7 @@ Further documentation for those who are interested to learn more see:
 ## Step 4
 
 Create a file `group_vars/all/ah_groups.yml` and add `ah_groups` list with one (1) item in it with the `name` of `admin` who's `perms` are `all` and `state` is `present`.
-If you need more information expand out this section that was copied from the group role's readme in ah_configuration.
-
-<details>
-  <summary>More info</summary>
-
-### Variables
-
-|Variable Name|Default Value|Required|Type|Description|
-|:---:|:---:|:---:|:---:|:---:|
-|`name`|""|yes|str|Group Name. Must be lower case containing only alphanumeric characters and underscores.|
-|`perms`|""|yes|str|The list of permissions to add to or remove from the given group. See below for options.|
-|`state`|`present`|no|str|Desired state of the group.|
-<!-- |`new_name`|""|yes|str|Setting this option will change the existing name (looked up via the name field.| -->
-
-#### perms
-
-The module accepts the following roles:
-
-- For user management, `add_user`, `change_user`, `delete_user`, and `view_user`.
-- For group management, `add_group`, `change_group`, `delete_group`, and `view_group`.
-- For collection namespace management, `add_namespace`, `change_namespace`, `upload_to_namespace`, and `delete_namespace`.
-- For collection content management, `modify_ansible_repo_content`, and `delete_collection`.
-- For remote repository configuration, `change_collectionremote` and `view_collectionremote`.
-- For container image management, only with private automation hub v4.3.2
-  or later, `change_containernamespace_perms`, `change_container`,
-  `change_image_tag`, `create_container`, `push_container`, and `delete_containerrepository`.
-- For task management, `change_task`, `view_task`, and `delete_task`.
-- You can also grant or revoke all permissions with `*` or `all`.
-
-### Standard Project Data Structure
-
-#### Yaml Example
-
-```yaml
----
-ah_groups:
-  - name: group1
-    state: present
-...
-
-```
-
-</details>
+If you need more information follow the documentation link below.
 
 Further documentation for those who are interested to learn more see:
 
@@ -122,32 +80,32 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 5
 
-Create a playbook `playbooks/hub_config.yml` and `include` the `repository` role as the first task and `include` the `user` role as the last task.
+Create a playbook `playbooks/hub_config.yml` add in the `repository` role name in the first task and the `user` role name in the last task.
 
 ```yaml
 ---
-- name: configure private automation hub after installation
+- name: Configure private automation hub after installation
   hosts: all
   gather_facts: false
   connection: local
   vars_files:
-    - "vault.yml"
+    - "../vault.yml"
   tasks:
-    - name: include repository role
+    - name: Include repository role
       ansible.builtin.include_role:
-        name: redhat_cop.ah_configuration.###
+        name:
 
-    - name: include repository sync role
+    - name: Include repository sync role
       ansible.builtin.include_role:
-        name: redhat_cop.ah_configuration.###
+        name: redhat_cop.ah_configuration.repository_sync
 
-    - name: include group role
+    - name: Include group role
       ansible.builtin.include_role:
-        name: redhat_cop.ah_configuration.###
+        name: redhat_cop.ah_configuration.group
 
-    - name: include user role
+    - name: Include user role
       ansible.builtin.include_role:
-        name: redhat_cop.ah_configuration.###
+        name:
 ...
 ```
 
@@ -157,9 +115,9 @@ The next step is to run the playbook, for demonstration purposes we are going to
 
 If you wish to skip this step run the playbook this way[^1].
 
-[^1]: `ansible-galaxy collection install redhat_cop.ah_configuration:0.9.2` then `ansible-playbook -i inventory.yml -l automationhub hub_config.yml`
+[^1]: `ansible-galaxy collection install redhat_cop.ah_configuration` then `ansible-playbook -i inventory.yml -l automationhub hub_config.yml`
 
-Login to the automation hub using the podman login command. This will ask for a user:pass. After authenticating pull the config_as_code_student# image. **(make sure to change # to your student number and the lab#)**
+Login to the automation hub using the podman login command. This will ask for a user:pass. After authenticating pull the config_as_code image.
 
 Use the username: **'admin'** and the password for your account in the workshop.
 
@@ -167,7 +125,7 @@ Use the username: **'admin'** and the password for your account in the workshop.
 
 ```console
 podman login --tls-verify=false hub-student#.rh####.example.opentlc.com
-podman pull --tls-verify=false hub-student#.rh####.example.opentlc.com/config_as_code_#:latest
+podman pull --tls-verify=false hub-student#.rh####.example.opentlc.com/config_as_code:latest
 ```
 
 Ansible navigator takes the following commands.
@@ -183,7 +141,7 @@ The options used are
 Use these options to run the playbook in the execution environment.
 
 ```console
-ansible-navigator run hub_config.yml --eei hub-student#.rh####.example.opentlc.com/config_as_code -i inventory.yml -l automationhub --pa='--tls-verify=false' -m stdout
+ansible-navigator run playbooks/hub_config.yml --eei hub-student#.rh####.example.opentlc.com/config_as_code -i inventory.yml -l automationhub --pa='--tls-verify=false' -m stdout
 ```
 
 [previous task](task1.md) [next task](task3.md)

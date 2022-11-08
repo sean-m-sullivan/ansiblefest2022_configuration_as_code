@@ -4,24 +4,41 @@ In this section, you will only be given a summary of the objects you need to cre
 
 ## Step 1
 
-Create a file `group_vars/all/projects.yml` and add the required information to the list `controller_projects` to configure the UI to look like the screenshot.
-
-### What git project are we pointing at
+Create a file `group_vars/all/settings.yml` and copy all this into the file.
 
 ```yaml
 ---
-controller_projects:
-
+controller_settings:
+  settings:
+    GALAXY_IGNORE_CERTS: true
 ...
 ```
 
-![project](assets/images/projects.png)
+Further documentation for those who are interested to learn more see:
+
+- [settings role](https://github.com/redhat-cop/controller_configuration/blob/devel/roles/settings/README.md)
+
+## Step 2
+
+Create a file `group_vars/all/execution_environments.yml` and add the required information to the list `controller_execution_environments` to configure the UI to look like the screenshots
+
+```yaml
+---
+controller_execution_environments:
+
+...
+
+```
+
+![execution_environments supported](assets/images/ee_supported.png)
+![execution_environments minimal](assets/images/ee_minimal.png)
+![execution_environments 2.9](assets/images/ee_29.png)
 
 Further documentation for those who are interested to learn more see:
 
-- [projects role](https://github.com/redhat-cop/controller_configuration/blob/devel/roles/projects/README.md)
+- [execution environments role](https://github.com/redhat-cop/controller_configuration/blob/devel/roles/execution_environments/README.md)
 
-## Step 2
+## Step 3
 
 Create a file `group_vars/all/credential_types.yml` and add the required information to the list `controller_credential_types` to create also credential type called `automation_hub` with the values from the screenshot.
 
@@ -60,7 +77,25 @@ Further documentation for those who are interested to learn more see:
 
 - [credential types role](https://github.com/redhat-cop/controller_configuration/blob/devel/roles/credential_types/README.md)
 
-## Step 3
+## Step 4
+
+Create a file `group_vars/all/organizations.yml` and add the required information to the list `controller_organizations` to configure the UI to look like the screenshot
+
+```yaml
+---
+controller_organizations:
+
+...
+
+```
+
+![organizations](assets/images/organizations.png)
+
+Further documentation for those who are interested to learn more see:
+
+- [organizations role](https://github.com/redhat-cop/controller_configuration/blob/devel/roles/organizations/README.md)
+
+## Step 5
 
 Create a file `group_vars/all/credentials.yml` and add the required information to the list `controller_credentials` to configure the UI to look like the screenshot
 
@@ -153,7 +188,26 @@ Further documentation for those who are interested to learn more see:
 
 - [credentials role](https://github.com/redhat-cop/controller_configuration/blob/devel/roles/credentials/README.md)
 
-## Step 4
+## Step 6
+
+Create a file `group_vars/all/projects.yml` and add the required information to the list `controller_projects` to configure the UI to look like the screenshot.
+
+### What git project are we pointing at
+
+```yaml
+---
+controller_projects:
+
+...
+```
+
+![project](assets/images/projects.png)
+
+Further documentation for those who are interested to learn more see:
+
+- [projects role](https://github.com/redhat-cop/controller_configuration/blob/devel/roles/projects/README.md)
+
+## Step 7
 
 Create a file `group_vars/all/inventories.yml` and add the required information to the list `controller_inventories` to configure the UI to look like the screenshot
 
@@ -170,7 +224,7 @@ Further documentation for those who are interested to learn more see:
 
 - [inventories role](https://github.com/redhat-cop/controller_configuration/blob/devel/roles/inventories/README.md)
 
-## Step 5
+## Step 8
 
 Create a file `group_vars/all/inventory_sources.yml` and add the required information to the list `controller_inventory_sources` to configure the UI to look like the screenshot
 **WE never declared an inventory files here yet, and never declared the env variable**
@@ -188,7 +242,7 @@ Further documentation for those who are interested to learn more see:
 
 - [inventory sources role](https://github.com/redhat-cop/controller_configuration/blob/devel/roles/inventory_sources/README.md)
 
-## Step 6
+## Step 9
 
 Create a file `group_vars/all/job_templates.yml` and add the required information to the list `controller_templates` to configure the UI to look like the screenshot
 
@@ -212,60 +266,6 @@ Further documentation for those who are interested to learn more see:
 
 - [job templates role](https://github.com/redhat-cop/controller_configuration/blob/devel/roles/job_templates/README.md)
 
-## Step 7
-
-Create a file `group_vars/all/organizations.yml` and add the required information to the list `controller_organizations` to configure the UI to look like the screenshot
-
-```yaml
----
-controller_organizations:
-
-...
-
-```
-
-![organizations](assets/images/organizations.png)
-
-Further documentation for those who are interested to learn more see:
-
-- [organizations role](https://github.com/redhat-cop/controller_configuration/blob/devel/roles/organizations/README.md)
-
-## Step 8
-
-Create a file `group_vars/all/execution_environments.yml` and add the required information to the list `controller_execution_environments` to configure the UI to look like the screenshots
-
-```yaml
----
-controller_execution_environments:
-
-...
-
-```
-
-![execution_environments supported](assets/images/ee_supported.png)
-![execution_environments minimal](assets/images/ee_minimal.png)
-![execution_environments 2.9](assets/images/ee_29.png)
-
-Further documentation for those who are interested to learn more see:
-
-- [execution environments role](https://github.com/redhat-cop/controller_configuration/blob/devel/roles/execution_environments/README.md)
-
-## Step 9
-
-Create a file `group_vars/all/settings.yml` and copy all this into the file.
-
-```yaml
----
-controller_settings:
-  settings:
-    GALAXY_IGNORE_CERTS: true
-...
-```
-
-Further documentation for those who are interested to learn more see:
-
-- [settings role](https://github.com/redhat-cop/controller_configuration/blob/devel/roles/settings/README.md)
-
 ## Step 10
 
 Create a playbook `playbooks/controller_config.yml` and copy all this into the file.
@@ -275,8 +275,7 @@ Create a playbook `playbooks/controller_config.yml` and copy all this into the f
 ```yaml
 ---
 - name: Playbook to configure ansible controller post installation
-  hosts: automationcontroller
-  gather_facts: false
+  hosts: all
   vars_files:
     - "../vault.yml"
   connection: local
@@ -286,25 +285,12 @@ Create a playbook `playbooks/controller_config.yml` and copy all this into the f
         name: redhat_cop.controller_configuration.settings
       when: controller_settings is defined
 
-    - name: Create organizations without credentials
-      ansible.builtin.set_fact:
-        orgs_no_creds: "{{ orgs_no_creds | default([]) + [{'name': item.name}] }}"
-      loop: "{{ controller_organizations }}"
-      when:
-        - controller_organizations is defined
-        - (item.state | default('Present')) != 'absent'
-
-    - name: Print out custom fact
-      ansible.builtin.debug:
-        var: orgs_no_creds
-        verbosity: 2
-
     - name: Include organization role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.organizations
       vars:
-        controller_organizations: "{{ orgs_no_creds }}"
-      when: orgs_no_creds is defined
+        assign_galaxy_credentials_to_org: false
+      when: controller_organizations is defined
 
     - name: Include labels role
       ansible.builtin.include_role:
@@ -323,7 +309,7 @@ Create a playbook `playbooks/controller_config.yml` and copy all this into the f
         name: redhat_cop.controller_configuration.teams
       when: controller_teams is defined
 
-    # probably not optimal but works, looking for better solutions
+   # probably not optimal but works, looking for better solutions
     - name: Figuring out AH token
       block:
         - name: Authenticate and get an API token from Automation Hub
@@ -358,15 +344,15 @@ Create a playbook `playbooks/controller_config.yml` and copy all this into the f
         name: redhat_cop.controller_configuration.credential_input_sources
       when: controller_credential_input_sources is defined
 
-    - name: Include organizations role
-      ansible.builtin.include_role:
-        name: redhat_cop.controller_configuration.organizations
-      when: controller_organizations is defined
-
     - name: Include execution_environments role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.execution_environments
       when: controller_execution_environments is defined
+
+    - name: Include organizations role
+      ansible.builtin.include_role:
+        name: redhat_cop.controller_configuration.organizations
+      when: controller_organizations is defined
 
     - name: Include projects role
       ansible.builtin.include_role:
@@ -431,7 +417,6 @@ Create a `collections/requirements.yml` file and add these collections to pull a
 collections:
   - name: redhat_cop.controller_configuration
   - name: redhat_cop.ah_configuration
-    version: 0.9.2-beta
   - name: redhat_cop.ee_utilities
   - name: redhat_cop.aap_utilities
   - name: awx.awx
@@ -455,7 +440,7 @@ Run controller_config playbook.
 **Replace rh####** with the correct shortname for the workshop.
 
 ```console
-ansible-navigator run controller_config.yml --eei hub-student#.rh####.example.opentlc.com/config_as_code -i inventory.yml -l automationcontroller --pa='--tls-verify=false' -m stdout
+ansible-navigator run playbooks/controller_config.yml --eei hub-student#.rh####.example.opentlc.com/config_as_code -i inventory.yml -l automationcontroller --pa='--tls-verify=false' -m stdout
 ```
 
 [previous task](task2.md)

@@ -40,16 +40,15 @@ Create a file in this folder path `group_vars/all/auth.yml`
 
 ```yaml
 ---
-controller_hostname: "{{ groups['automationcontroller'][0] }}"
+controller_hostname: "{{ controller_host | default(groups['automationcontroller'][0]) }}"
 controller_username: "{{ controller_user | default('admin') }}"
 controller_password: "{{ controller_pass }}"
 controller_validate_certs: false
 
-ah_host: "{{ groups['automationhub'][0] }}"
+ah_host: "{{ ah_hostname | default(groups['automationhub'][0]) }}"
 ah_username: "{{ ah_user | default('admin') }}"
 ah_password: "{{ ah_pass }}"
-ah_path_prefix: 'galaxy' # this is for private automation hub
-ah_verify_ssl: false
+ah_path_prefix: 'galaxy'  # this is for private automation hub
 ah_validate_certs: false
 
 ee_registry_username: "{{ ah_username }}"
@@ -67,7 +66,7 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 4
 
-Create your inventory file `inventory.yml`, copy in the username and password into the correct fields a long with the servers. For the builder group put the automation hub server.
+Create your inventory file `inventory.yml`, copy in the username and password into the correct fields a long with the servers.
 
 ```yaml
 ---
@@ -88,6 +87,8 @@ all:
 
 ```
 
+NOTE: These are hostnames do not have https:// or things will fail
+
 Further documentation for those who are interested to learn more see:
 
 - [more about inventories](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#inventory-basics-formats-hosts-and-groups)
@@ -95,21 +96,18 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 5
 
-Create a vault file `vault.yml` and fill in the correct passwords for each variable
+Create a vault file `vault.yml` and **YOU WILL NEED TO FILL THESE IN** with the correct passwords for each variable. Currently they are set to the description of what you should be updating them too.
 
 {% raw %}
 
 ```yaml
 ---
-cloud_token: 'this is the one from console.redhat.com'
-student_num: "your student username here"
+vault_pass: 'the password to decrypt this vault'
 machine_pass: 'password for root user on hub'
-ah_api_user_pass: 'this will create and use this password can be generated'
-controller_api_user_pass: 'this will create and use this password can be generated'
 controller_pass: 'account pass for controller'
 ah_pass: 'hub admin account pass'
-ah_token_password: "{{ ah_api_user_pass }}"
-vault_pass: 'the password to decrypt this vault'
+controller_api_user_pass: 'this will create and use this password can be generated'
+ah_token_password: 'this will create and use this password can be generated'
 ...
 
 ```
@@ -119,7 +117,7 @@ vault_pass: 'the password to decrypt this vault'
 Create a `.password` file put your generated password in this file. (remember we are not committing this file into git because we have it in our ignore list)
 
 ```text
-Generated_Password
+Your_Generated_Password_In_.password_File
 ```
 
 Create an `ansible.cfg` file to point to the .password file.
@@ -184,11 +182,9 @@ ee_list:
     collections:
       - name: redhat_cop.controller_configuration
       - name: redhat_cop.ah_configuration
-        version: 0.9.2
       - name: redhat_cop.ee_utilities
       - name: redhat_cop.aap_utilities
       - name: awx.awx
-
 
 ee_image_push: true
 ee_create_ansible_config: false
