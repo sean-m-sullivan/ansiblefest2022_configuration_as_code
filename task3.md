@@ -281,31 +281,31 @@ Create a playbook `playbooks/controller_config.yml` and copy all this into the f
     - "../vaults.yml"
   connection: local
   tasks:
-    - name: include setting role
+    - name: Include setting role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.settings
       when: controller_settings is defined
 
-    - name: include organization role
+    - name: Include organization role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.organizations
       vars:
         assign_galaxy_credentials_to_org: false
       when: controller_organizations is defined
 
-    - name: include labels role
+    - name: Include labels role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.labels
       when: controller_labels is defined
 
-    - name: include users role
+    - name: Include users role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.users
       vars:
         controller_configuration_users_secure_logging: true
       when: controller_user_accounts is defined
 
-    - name: include teams role
+    - name: Include teams role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.teams
       when: controller_teams is defined
@@ -330,7 +330,7 @@ Create a playbook `playbooks/controller_config.yml` and copy all this into the f
 
     - name: update credentials
       block:
-        - name: include credential_types role
+        - name: Include credential_types role
           ansible.builtin.include_role:
             name: redhat_cop.controller_configuration.credential_types
           when: controller_credential_types is defined
@@ -352,90 +352,90 @@ Create a playbook `playbooks/controller_config.yml` and copy all this into the f
             _current_credentials: "{{ lookup('awx.awx.tower_api', 'credentials', query_params={ 'managed': false }, host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
 #            _current_cred_types: "{{ lookup('ansible.controller.controller_api', 'credentials', host=controller_hostname, username=controller_username, password=controller_password, verify_ssl=controller_validate_certs) }}"
 
-        - name: include credentials role
+        - name: Include credentials role
           ansible.builtin.include_role:
             name: redhat_cop.controller_configuration.credentials
           vars:
             controller_credentials: "{{ cf_current_credentials }}"
             controller_configuration_credentials_secure_logging: false
 
-        - name: include credential_types role
+        - name: Include credential_types role
           ansible.builtin.include_role:
             name: redhat_cop.controller_configuration.credential_types
           vars:
             controller_credential_types: "{{ cf_current_credential_types }}"
 
-        - name: include credential_types role
+        - name: Include credential_types role
           ansible.builtin.include_role:
             name: redhat_cop.controller_configuration.credential_types
 
-    - name: include credential role
+    - name: Include credential role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.credentials
       vars:
         controller_configuration_credentials_secure_logging: true
       when: controller_credentials is defined
 
-    - name: include credential_input_sources role
+    - name: Include credential_input_sources role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.credential_input_sources
       when: controller_credential_input_sources is defined
 
-    - name: include execution_environments role
+    - name: Include execution_environments role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.execution_environments
       when: controller_execution_environments is defined
 
-    - name: include organizations role
+    - name: Include organizations role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.organizations
       when: controller_organizations is defined
 
-    - name: include projects role
+    - name: Include projects role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.projects
       when: controller_projects is defined
 
-    - name: include inventories role
+    - name: Include inventories role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.inventories
       when: controller_inventories is defined
 
-    - name: include inventory_sources role
+    - name: Include inventory_sources role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.inventory_sources
       when: controller_inventory_sources is defined
 
-    - name: include inventory_source_update role
+    - name: Include inventory_source_update role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.inventory_source_update
 
-    - name: include groups role
+    - name: Include groups role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.groups
       when: controller_groups is defined
 
-    - name: include applications role
+    - name: Include applications role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.applications
       when: controller_applications is defined
 
-    - name: include job_templates role
+    - name: Include job_templates role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.job_templates
       when: controller_templates is defined
 
-    - name: include workflow_job_templates role
+    - name: Include workflow_job_templates role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.workflow_job_templates
       when: controller_workflows is defined
 
-    - name: include schedules role
+    - name: Include schedules role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.schedules
       when: controller_schedules is defined
 
-    - name: include roles role
+    - name: Include roles role
       ansible.builtin.include_role:
         name: redhat_cop.controller_configuration.roles
       when: controller_roles is defined
