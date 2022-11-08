@@ -318,7 +318,7 @@ Create a playbook `playbooks/controller_config.yml` and copy all this into the f
             ah_host: "{{ ah_host | default(groups['automationhub'][0]) }}"
             ah_username: "{{ ah_token_username | default('admin') }}"
             ah_password: "{{ ah_token_password }}"
-            ah_path_prefix: 'galaxy' # this is for private automation hub
+            ah_path_prefix: 'galaxy'  # this is for private automation hub
             ah_verify_ssl: false
           register: r_ah_token
 
