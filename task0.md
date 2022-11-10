@@ -139,6 +139,7 @@ Create a file `.gitignore` which we will use to tell git to not include some fil
 
 ```text
 .password
+ansible.cfg
 ansible-navigator.log
 *.json
 ```

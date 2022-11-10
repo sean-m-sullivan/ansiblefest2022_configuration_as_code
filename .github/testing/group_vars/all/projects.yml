@@ -5,10 +5,10 @@ controller_projects:
     organization: config_as_code
     scm_type: git
     scm_url: git@github.com:redhat-cop/aap_configuration_template.git
-    scm_branch: "{{ scm_branch }}"
+    scm_branch: ""
     scm_clean: true
     scm_update_on_launch: true
-    scm_credential: "github"
+    scm_credential: "git"
     update_project: true
     wait: true
 ...
