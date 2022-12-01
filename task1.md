@@ -20,7 +20,7 @@ Further documentation for those who are interested to learn more see:
 Install our ee_utilities collection and containers.podman using `ansible-galaxy` command.
 
 ```console
-ansible-galaxy collection install redhat_cop.ee_utilities containers.podman community.general
+ansible-galaxy collection install infra.ee_utilities containers.podman community.general
 ```
 
 Further documentation for those who are interested to learn more see:
@@ -140,7 +140,7 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 6
 
-Create a new playbook called `playbooks/build_ee.yml` and make the hosts use the group builder (which for this lab we are using automation hub, see note) and turn gather_facts on. Then add include role redhat_cop.ee_utilities.ee_builder
+Create a new playbook called `playbooks/build_ee.yml` and make the hosts use the group builder (which for this lab we are using automation hub, see note) and turn gather_facts on. Then add include role infra.ee_utilities.ee_builder
 
 Note: this we would normally suggest being a small cli only server for deploying config as code and running installer/upgrades for AAP
 
@@ -154,7 +154,7 @@ Note: this we would normally suggest being a small cli only server for deploying
   tasks:
     - name: Include ee_builder role
       ansible.builtin.include_role:
-        name: redhat_cop.ee_utilities.ee_builder
+        name: infra.ee_utilities.ee_builder
 ...
 
 ```
@@ -180,10 +180,10 @@ which the role will loop over and for each item in this list it will create and 
 ee_list:
   - ee_name: "config_as_code"
     collections:
-      - name: redhat_cop.controller_configuration
-      - name: redhat_cop.ah_configuration
-      - name: redhat_cop.ee_utilities
-      - name: redhat_cop.aap_utilities
+      - name: infra.controller_configuration
+      - name: infra.ah_configuration
+      - name: infra.ee_utilities
+      - name: infra.aap_utilities
       - name: awx.awx
 
 ee_image_push: true
