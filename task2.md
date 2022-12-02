@@ -16,7 +16,7 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 2
 
-Create a file `group_vars/all/ah_repositories.yml` you will need to add `redhat_cop.ah_configuration` and `redhat_cop.controller_configuration` to the current list of community repositories.
+Create a file `group_vars/all/ah_repositories.yml` you will need to add `infra.ah_configuration` and `infra.controller_configuration` to the current list of community repositories.
 
 ```yaml
 ---
@@ -29,8 +29,8 @@ Create a file `group_vars/all/ah_repositories.yml` you will need to add `redhat_
 
 ah_repository_community:
   requirements:
-    - redhat_cop.aap_utilities
-    - redhat_cop.ee_utilities
+    - infra.aap_utilities
+    - infra.ee_utilities
     - containers.podman
     - awx.awx
   wait: true
@@ -97,11 +97,11 @@ Create a playbook `playbooks/hub_config.yml` add in the `repository` role name i
 
     - name: Include repository sync role
       ansible.builtin.include_role:
-        name: redhat_cop.ah_configuration.repository_sync
+        name: infra.ah_configuration.repository_sync
 
     - name: Include group role
       ansible.builtin.include_role:
-        name: redhat_cop.ah_configuration.group
+        name: infra.ah_configuration.group
 
     - name: Include user role
       ansible.builtin.include_role:
@@ -115,7 +115,7 @@ The next step is to run the playbook, for demonstration purposes we are going to
 
 If you wish to skip this step run the playbook this way[^1].
 
-[^1]: `ansible-galaxy collection install redhat_cop.ah_configuration` then `ansible-playbook -i inventory.yml -l automationhub hub_config.yml`
+[^1]: `ansible-galaxy collection install infra.ah_configuration` then `ansible-playbook -i inventory.yml -l automationhub hub_config.yml`
 
 Login to the automation hub using the podman login command. This will ask for a user:pass. After authenticating pull the config_as_code image.
 
