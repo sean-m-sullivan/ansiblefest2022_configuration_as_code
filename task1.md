@@ -188,6 +188,7 @@ ee_list:
       - name: awx.awx
 
 ee_image_push: true
+ee_prune_images: false
 ee_create_ansible_config: false
 ...
 ```
