@@ -66,7 +66,7 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 4
 
-Create your inventory file `inventory.yml`, copy in the username and password into the correct fields a long with the servers.
+Create your inventory file `inventory.yml`, **YOU WILL NEED TO FILL THESE IN** copy in the username and password into the correct fields a long with the servers.
 
 ```yaml
 ---
@@ -114,7 +114,7 @@ ah_token_password: 'this will create and use this password can be generated'
 
 {% endraw %}
 
-Create a `.password` file put your generated password in this file. (remember we are not committing this file into git because we have it in our ignore list)
+Create a `.password` file **We do not recommend you do this outside of lab environment** put your generated password in this file. Even though we are not committing this file into git because we have it in our ignore list, we do not recommend putting passwords in plain text ever, this is just to simplify/speed up the lab.
 
 ```text
 Your_Generated_Password_In_.password_File

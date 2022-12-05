@@ -227,7 +227,7 @@ Further documentation for those who are interested to learn more see:
 ## Step 8
 
 Create a file `group_vars/all/inventory_sources.yml` and add the required information to the list `controller_inventory_sources` to configure the UI to look like the screenshot
-**WE never declared an inventory files here yet, and never declared the env variable**
+**NOTE the inventory file name should be just inventory.yml**
 
 ```yaml
 ---
@@ -248,8 +248,6 @@ Create a file `group_vars/all/job_templates.yml` and add the required informatio
 
 Pay attention to the credentials attached to each job template.
 
-**remove labels from the example for build_execution_environment image**
-**need example project to test this as job templates not matching playbook causing failure**
 
 ```yaml
 ---
@@ -309,7 +307,7 @@ Create a playbook `playbooks/controller_config.yml` and copy all this into the f
         name: infra.controller_configuration.teams
       when: controller_teams is defined
 
-   # probably not optimal but works, looking for better solutions
+    # probably not optimal but works, looking for better solutions
     - name: Figuring out AH token
       block:
         - name: Authenticate and get an API token from Automation Hub
