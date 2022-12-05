@@ -159,7 +159,7 @@ controller_credentials:
     organization: config_as_code
     description: local password
     inputs:
-      username: "{{ student_num }}"
+      username: student
       password: "{{ machine_pass }}"
 
   - name: git
@@ -167,7 +167,7 @@ controller_credentials:
     organization: config_as_code
     description: git
     inputs:
-      username: "{{ student_num }}"
+      username: "{{ student_account }}"
       password: "{{ machine_pass }}"
 
   - name: vault
@@ -288,6 +288,7 @@ Create a playbook `playbooks/controller_config.yml` and copy all this into the f
         name: infra.controller_configuration.organizations
       vars:
         assign_galaxy_credentials_to_org: false
+        assign_default_ee_to_org: false
       when: controller_organizations is defined
 
     - name: Include labels role

@@ -1,0 +1,11 @@
+---
+- name: Testing Galaxy
+  hosts: hubs
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Install the latest version of podman
+      ansible.builtin.dnf:
+        name: podman
+        state: latest
+...

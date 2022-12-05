@@ -108,6 +108,7 @@ controller_pass: 'account pass for controller'
 ah_pass: 'hub admin account pass'
 controller_api_user_pass: 'this will create and use this password can be generated'
 ah_token_password: 'this will create and use this password can be generated'
+student_account: 'this is the account under Git Access on your workbench information page, example: student2'
 ...
 
 ```
@@ -187,6 +188,7 @@ ee_list:
       - name: awx.awx
 
 ee_image_push: true
+ee_prune_images: false
 ee_create_ansible_config: false
 ...
 ```
