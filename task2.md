@@ -115,7 +115,7 @@ The next step is to run the playbook, for demonstration purposes we are going to
 
 If you wish to skip this step run the playbook this way[^1].
 
-[^1]: `ansible-galaxy collection install infra.ah_configuration` then `ansible-playbook -i inventory.yml -l automationhub hub_config.yml`
+[^1]: `ansible-galaxy collection install infra.ah_configuration` then `ansible-playbook -i inventory.yml -l automationhub playbooks/hub_config.yml`
 
 Login to the automation hub using the podman login command. This will ask for a user:pass. After authenticating pull the config_as_code image.
 
