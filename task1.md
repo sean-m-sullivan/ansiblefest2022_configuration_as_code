@@ -113,6 +113,8 @@ student_account: 'this is the account under Git Access on your workbench informa
 
 ```
 
+NOTE: the easiest way to do this is have all passwords be the provided password.
+
 {% endraw %}
 
 Create a `.password` file **We do not recommend you do this outside of lab environment** put your generated password in this file. Even though we are not committing this file into git because we have it in our ignore list, we do not recommend putting passwords in plain text ever, this is just to simplify/speed up the lab.
