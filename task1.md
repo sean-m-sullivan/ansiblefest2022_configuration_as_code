@@ -66,7 +66,7 @@ Further documentation for those who are interested to learn more see:
 
 ## Step 4
 
-Create your inventory file `inventory.yml`, **YOU WILL NEED TO FILL THESE IN** copy in the username and password into the correct fields a long with the servers.
+Create your inventory file `inventory.yml`, **YOU WILL NEED TO FILL THESE IN** copy in the servers replacing lines 77, 81, and 85.
 
 ```yaml
 ---

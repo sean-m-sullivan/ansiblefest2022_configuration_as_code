@@ -248,7 +248,6 @@ Create a file `group_vars/all/job_templates.yml` and add the required informatio
 
 Pay attention to the credentials attached to each job template.
 
-
 ```yaml
 ---
 controller_templates:

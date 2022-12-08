@@ -169,4 +169,6 @@ git push origin master
 
 NOTE: It is likely you will get a failed commit the first attempt due to end of line auto fixes taking place, if this happens just run the commit again and everything should be green.
 
+NOTE: also if you get an error about credential helper run `git config --global --unset credential.helper` and then do your commit again.
+
 [next task](task1.md)
