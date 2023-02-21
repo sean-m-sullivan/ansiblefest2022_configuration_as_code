@@ -171,7 +171,7 @@ Further documentation for those who are interested to learn more see:
 
 Create a file `group_vars/all/ah_ee_list.yml` where we will create a list called `ee_list` that has 4 variables per item which are:
 
-- `ee_name` this is required and will be what the EE image will be called
+- `name` this is required and will be what the EE image will be called
 - `bindep` this is any system packages that would be needed
 - `python` these are any python modules that need to be added through pip (excluding ansible)
 - `collections` any collections that you would like to be built into your EE image
@@ -181,7 +181,7 @@ which the role will loop over and for each item in this list it will create and 
 ```yaml
 ---
 ee_list:
-  - ee_name: "config_as_code"
+  - name: "config_as_code"
     collections:
       - name: infra.controller_configuration
       - name: infra.ah_configuration
