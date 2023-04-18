@@ -3,21 +3,21 @@ all:
   children:
     automationcontroller:
       hosts:
-        controller.node:
+        student1.95qz5.example.opentlc.com:
 
     automationhub:
       hosts:
-        hub.node:
+        hub-student1.95qz5.example.opentlc.com:
 
     builder:
       hosts:
-        hub.node:
+        hub-student1.95qz5.example.opentlc.com:
   vars:
     #  ansible_user: admin
     #  ansible_password: secret123
     env: dev
     controller_configuration_credentials_secure_logging: false
-    controller_pass: secret123
+    controller_pass: np2q57oc
     #  ah_pass: secret123
     ansible_ssh_common_args: '-o StrictHostKeyChecking=no'  # might need this, test without on lab
 ...
