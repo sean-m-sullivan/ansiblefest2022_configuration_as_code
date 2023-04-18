@@ -30,9 +30,9 @@ controller_execution_environments:
 
 ```
 
-![execution_environments supported](assets/images/ee_supported.png)
-![execution_environments minimal](assets/images/ee_minimal.png)
-![execution_environments 2.9](assets/images/ee_29.png)
+![execution_environments supported](assets/images/ee_supportedv3.png)
+![execution_environments minimal](assets/images/ee_minimalv2.png)
+![execution_environments 2.9](assets/images/ee_29v2.png)
 
 Further documentation for those who are interested to learn more see:
 
@@ -70,8 +70,8 @@ controller_credential_types:
 
 {% endraw %}
 
-![credential_type_input](assets/images/cred_type_input.png)
-![credential_type_injector](assets/images/cred_type_injector.png)
+![credential_type_input](assets/images/cred_type_inputv2.png)
+![credential_type_injector](assets/images/cred_type_injectorv2.png)
 
 Further documentation for those who are interested to learn more see:
 
@@ -255,9 +255,9 @@ controller_templates:
 ...
 ```
 
-![job_template_ee](assets/images/jt_build_ee.png)
-![job_template_ah_config](assets/images/jt_ah_config.png)
-![job_template_controller_config](assets/images/jt_controller_config.png)
+![job_template_ee](assets/images/jt_build_eev2.png)
+![job_template_ah_config](assets/images/jt_ah_configv2.png)
+![job_template_controller_config](assets/images/jt_controller_configv2.png)
 
 Further documentation for those who are interested to learn more see:
 

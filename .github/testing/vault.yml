@@ -1,8 +1,9 @@
 ---
 vault_pass: 'secret123'
-ah_pass: 'secret123'
-controller_pass: 'secret123'
+ah_pass: np2q57oc
+controller_pass: np2q57oc
 machine_pass: 'password'
-ah_token_password: 56148d720b736d47a0b2b1c96d1c7e6f18339666
-student_account: student2
+ah_token_password: cdb02842132e1202eea995b04887d069b2f1df00
+ah_token: cdb02842132e1202eea995b04887d069b2f1df00
+student_account: student1
 ...
