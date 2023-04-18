@@ -4,10 +4,10 @@ In this section we will show you step by step how to build an Execution Environm
 
 ## Step 1
 
-Ensure that you have `ansible-core`, `ansible-lint`, and `ansible-builder` installed on your machine.
+Ensure that you have `ansible-core`, `ansible-lint`, and `ansible-builder`, and 'podman' installed on your machine.
 
 ```console
-sudo dnf install ansible-core ansible-lint ansible-builder
+sudo dnf install ansible-core ansible-lint ansible-builder podman
 ```
 
 Further documentation for those who are interested to learn more see:
