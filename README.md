@@ -1,10 +1,10 @@
-# Ansible Fest 2022 Configuration as Code Workshop
+# Summit Configuration as Code Workshop
 
 A guided lab with using verified collections utilizing Configuration as Code to maintain your AAP instances
 
 ## Website
 
-- [Workshop Website](https://sean-m-sullivan.github.io/ansiblefest2022_configuration_as_code/) - Check out the optional website which is rendered automatically from markdown files using [Github Pages](https://pages.github.com/).  If you are already on the website please ignore this section.
+- [Workshop Website](https://aap2.demoredhat.com/exercises/ansible_config_as_code/) - Check out the optional website which is rendered automatically from markdown files using [Github Pages](https://pages.github.com/).  If you are already on the website please ignore this section.
 
 ## Tasks
 
