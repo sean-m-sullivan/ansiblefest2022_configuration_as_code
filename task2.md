@@ -121,11 +121,11 @@ Login to the automation hub using the podman login command. This will ask for a 
 
 Use the username: **'admin'** and the password for your account in the workshop.
 
-**Replace rh####** with the correct shortname for the workshop.
+**Replace ####** with the correct shortname for the workshop.
 
 ```console
-podman login --tls-verify=false hub-student#.rh####.example.opentlc.com
-podman pull --tls-verify=false hub-student#.rh####.example.opentlc.com/config_as_code:latest
+podman login --tls-verify=false hub-student#.####.example.opentlc.com
+podman pull --tls-verify=false hub-student#.####.example.opentlc.com/config_as_code:latest
 ```
 
 Ansible navigator takes the following commands.
@@ -141,7 +141,7 @@ The options used are
 Use these options to run the playbook in the execution environment.
 
 ```console
-ansible-navigator run playbooks/hub_config.yml --eei hub-student#.rh####.example.opentlc.com/config_as_code -i inventory.yml -l automationhub --pa='--tls-verify=false' -m stdout
+ansible-navigator run playbooks/hub_config.yml --eei hub-student#.####.example.opentlc.com/config_as_code -i inventory.yml -l automationhub --pa='--tls-verify=false' -m stdout
 ```
 
 [previous task](task1.md) [next task](task3.md)
